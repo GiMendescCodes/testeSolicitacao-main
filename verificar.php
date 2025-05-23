@@ -1,39 +1,74 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+$conn = new mysqli("localhost", "root", "", "solicitacao");
 
-$conn = new mysqli('localhost', 'root', '', 'solicitacao');
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-$dados = $conn->query("SELECT * FROM dados WHERE STATUS = 'pendente' ORDER BY data_envio ASC");
+// Atualiza o status conforme ação do admin
+if (isset($_GET['acao']) && isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $acao = $_GET['acao'];
+
+    if ($acao == 'aceitar') {
+        $novo_status = 'aceito';
+    } elseif ($acao == 'negar') {
+        $novo_status = 'negado';
+    } else {
+        $novo_status = 'pendente';
+    }
+
+    $sql = "UPDATE dados SET STATUS=? WHERE id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $novo_status, $id);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: verificar.php");
+    exit;
+}
+
+// Busca todas as solicitações
+$sql = "SELECT id, data_escolhida, mensagem, opcao FROM dados ORDER BY id DESC";
+$result = $conn->query($sql);
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Verificação de Solicitações</title>
-</head>
-<body>
-    <h1>Solicitações Pendentes</h1>
+<style>
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px auto;
+    max-width: 400px;
+    background: #fff;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+.card button {
+    margin-right: 10px;
+}
+</style>
 
-    <?php if ($dados && $dados->num_rows > 0): ?>
-        <?php while ($dado = $dados->fetch_assoc()): ?>
-            <div class="dado" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
-                <p><strong>Nome:</strong> <?= htmlspecialchars($dado['nome']); ?></p>
-                <p><strong>Email:</strong> <?= htmlspecialchars($dado['email']); ?></p>
-                <p><strong>Enviado em:</strong> <?= $dado['data_envio']; ?></p>
+<h2>Verificação de Solicitações</h2>
 
-                <form action="acoes.php" method="POST" style="margin-top:10px;">
-                    <input type="hidden" name="id" value="<?= $dado['id']; ?>">
-                    <button type="submit" name="acao" value="aceitar">Aceitar</button>
-                    <button type="submit" name="acao" value="negar">Negar</button>
-                </form>
-            </div>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <p>Não há solicitações pendentes.</p>
-    <?php endif; ?>
-</body>
-</html>
+<?php
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo "<div class='card'>";
+        echo "<p><strong>Data:</strong> " . htmlspecialchars($row['data_escolhida']) . "</p>";
+        echo "<p><strong>Opção:</strong> " . htmlspecialchars($row['opcao']) . "</p>";
+        echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($row['mensagem']) . "</p>";
+
+        // Botões de ação
+        echo "<div>";
+        echo "<a href='verificar.php?acao=aceitar&id=" . $row['id'] . "'><button>Aceitar</button></a>";
+        echo "<a href='verificar.php?acao=negar&id=" . $row['id'] . "'><button>Negar</button></a>";
+        echo "</div>";
+
+        echo "</div>";
+    }
+} else {
+    echo "<p>Nenhuma solicitação para verificar.</p>";
+}
+
+$conn->close();
+?>
