@@ -3,8 +3,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/locales-all.global.min.js"></script>
 
-
-
 <form action="processar.php" method="post">
     <label>Data:</label>
     <input type="date" name="data" required><br>
@@ -24,6 +22,8 @@
     </div>
     <input type="hidden" name="opcao" id="opcao-selecionada">
 
+    <input type="hidden" name="tipo" value="solicitacao"> <!-- Novo: para identificar no processar -->
+
     <button type="submit">Enviar</button>
 </form>
 
@@ -34,8 +34,8 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Pega próxima folga
-$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND STATUS = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+// Pega próxima folga do tipo solicitacao
+$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND STATUS = 'aceito' AND tipo = 'solicitacao' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFolga = $conn->query($sqlFolga);
 $proxFolga = null;
 
@@ -44,8 +44,8 @@ if ($resultFolga->num_rows > 0) {
     $proxFolga = $row['data_escolhida'];
 }
 
-// Pega próxima férias
-$sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND STATUS = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+// Pega próxima férias do tipo solicitacao
+$sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND STATUS = 'aceito' AND tipo = 'solicitacao' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFerias = $conn->query($sqlFerias);
 $proxFerias = null;
 
@@ -59,16 +59,14 @@ $hoje = new DateTime();
 $semanasFolga = $proxFolga ? ceil($hoje->diff(new DateTime($proxFolga))->days / 7) : null;
 $semanasFerias = $proxFerias ? ceil($hoje->diff(new DateTime($proxFerias))->days / 7) : null;
 
-
-$sql = "SELECT data_escolhida, opcao, STATUS FROM dados ORDER BY id DESC LIMIT 6";
+// Busca últimas 6 solicitações do tipo solicitacao
+$sql = "SELECT data_escolhida, opcao, STATUS FROM dados WHERE tipo = 'solicitacao' ORDER BY id DESC LIMIT 6";
 $result = $conn->query($sql);
 
 if ($result === false) {
     die("Erro na consulta SQL: " . $conn->error);
 }
 ?>
-
-
 
 <h2>Histórico de Solicitações</h2>
 
@@ -122,7 +120,6 @@ $conn->close();
     <?php endif; ?>
 </div>
 
-
 <script>
 function toggleDropdown() {
     var dropdown = document.getElementById('dropdown-options');
@@ -134,13 +131,14 @@ function selecionarOpcao(opcao) {
     document.getElementById('selected-option').innerText = opcao + ' ▼';
     document.getElementById('dropdown-options').style.display = 'none';
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         initialView: 'dayGridMonth',
-        events: 'eventos.php',
+        events: 'eventos.php?tipo=solicitacao',  // Passa o tipo no GET para filtrar os eventos
         eventDisplay: 'block'
     });
 
@@ -211,5 +209,4 @@ document.addEventListener('DOMContentLoaded', function() {
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
-
 </style>
