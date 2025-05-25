@@ -5,7 +5,6 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Atualiza o status conforme ação do admin
 if (isset($_GET['acao']) && isset($_GET['id'])) {
     $id = $_GET['id'];
     $acao = $_GET['acao'];
@@ -28,8 +27,7 @@ if (isset($_GET['acao']) && isset($_GET['id'])) {
     exit;
 }
 
-// Busca todas as solicitações
-$sql = "SELECT id, data_escolhida, mensagem, opcao FROM dados ORDER BY id DESC";
+$sql = "SELECT id, data_escolhida, mensagem, FROM dados  ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 

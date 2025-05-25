@@ -26,8 +26,7 @@ if (isset($_GET['acao']) && isset($_GET['id'])) {
     header("Location: verificar.php");
     exit;
 }
-
-$sql = "SELECT id, data_escolhida, mensagem, opcao, arquivo FROM dados ORDER BY id DESC";
+$sql = "SELECT id, data_escolhida, mensagem, opcao, arquivo FROM dados WHERE tipo = 'justificativa' ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 

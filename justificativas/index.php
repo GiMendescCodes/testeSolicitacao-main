@@ -31,7 +31,7 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-$sql = "SELECT data_escolhida, opcao, STATUS FROM dados ORDER BY id DESC LIMIT 6";
+$sql = "SELECT data_escolhida, opcao, STATUS FROM justificativas ORDER BY id DESC LIMIT 6";
 $result = $conn->query($sql);
 
 if ($result === false) {

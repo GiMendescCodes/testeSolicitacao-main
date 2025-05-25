@@ -34,7 +34,7 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Pega próxima folga do tipo solicitacao
+
 $sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND STATUS = 'aceito' AND tipo = 'solicitacao' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFolga = $conn->query($sqlFolga);
 $proxFolga = null;
@@ -44,7 +44,7 @@ if ($resultFolga->num_rows > 0) {
     $proxFolga = $row['data_escolhida'];
 }
 
-// Pega próxima férias do tipo solicitacao
+
 $sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND STATUS = 'aceito' AND tipo = 'solicitacao' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFerias = $conn->query($sqlFerias);
 $proxFerias = null;
@@ -59,7 +59,6 @@ $hoje = new DateTime();
 $semanasFolga = $proxFolga ? ceil($hoje->diff(new DateTime($proxFolga))->days / 7) : null;
 $semanasFerias = $proxFerias ? ceil($hoje->diff(new DateTime($proxFerias))->days / 7) : null;
 
-// Busca últimas 6 solicitações do tipo solicitacao
 $sql = "SELECT data_escolhida, opcao, STATUS FROM dados WHERE tipo = 'solicitacao' ORDER BY id DESC LIMIT 6";
 $result = $conn->query($sql);
 
@@ -138,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         initialView: 'dayGridMonth',
-        events: 'eventos.php?tipo=solicitacao',  // Passa o tipo no GET para filtrar os eventos
+        events: 'eventos.php?tipo=solicitacao',
         eventDisplay: 'block'
     });
 

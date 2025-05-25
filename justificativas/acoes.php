@@ -14,12 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($id > 0 && in_array($acao, ['aceitar', 'negar'])) {
         $novo_status = $acao === 'aceitar' ? 'aceito' : 'negado';
 
-        $stmt = $conn->prepare("UPDATE dados SET STATUS = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE justificativas SET STATUS = ? WHERE id = ?");
         $stmt->bind_param("si", $novo_status, $id);
         $stmt->execute();
     }
 }
 
-// Redireciona de volta para verificar.php
 header('Location: verificar.php');
 exit;

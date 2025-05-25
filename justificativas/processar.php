@@ -8,9 +8,7 @@ if ($conn->connect_error) {
 $data = $_POST['data'];
 $mensagem = $_POST['mensagem'];
 $opcao = $_POST['opcao'];
-$tipo = $_POST['tipo'] ?? '';  // Recebe o tipo enviado pelo formulário (justificativa ou solicitacao)
 
-// Processar upload do arquivo
 $arquivo = null;
 
 if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
@@ -30,7 +28,7 @@ if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
 }
 
 // Inserção incluindo o campo tipo
-$sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS, arquivo, tipo) VALUES (?, ?, ?, 'pendente', ?, ?)";
+$sql = "INSERT INTO justificativas (data_escolhida, mensagem, opcao, STATUS, arquivo) VALUES (?, ?, ?, 'pendente', ?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
