@@ -28,7 +28,7 @@
 </form>
 
 <?php
-$conn = new mysqli("localhost", "root", "", "solicitacao");
+$conn = new mysqli("localhost", "root", "", "solicitacaoo");
 
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
