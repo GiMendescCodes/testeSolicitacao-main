@@ -1,34 +1,44 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "solicitacaoo");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+$conn = new mysqli("localhost", "root", "", "solicitacaoo");
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, data_escolhida, mensagem, opcao FROM dados ORDER BY id DESC";
-$result = $conn->query($sql);
+// Verifica se veio a ação para processar (via AJAX)
+if (isset($_GET['acao'], $_GET['id'])) {
+    $acao = $_GET['acao'];
+    $id = (int) $_GET['id'];
 
-echo '<style>
-.card {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 15px auto;
-    max-width: 400px;
-    background: #fff;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    if ($acao === 'aceitar' || $acao === 'negar') {
+        $novoStatus = ($acao === 'aceitar') ? 'aceito' : 'negado';
+
+        $stmt = $conn->prepare("UPDATE dados SET status = ? WHERE id = ?");
+        $stmt->bind_param('si', $novoStatus, $id);
+
+        if ($stmt->execute()) {
+            http_response_code(200);
+            echo "Status atualizado para $novoStatus";
+        } else {
+            http_response_code(500);
+            echo "Erro ao atualizar status";
+        }
+        $stmt->close();
+    } else {
+        http_response_code(400);
+        echo "Ação inválida";
+    }
+
+    $conn->close();
+    exit; // para não carregar o restante do HTML
 }
-.btn {
-    display: inline-block;
-    padding: 5px 10px;
-    margin-right: 10px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-</style>';
+
+// Código para mostrar as solicitações e botões de ação
+$sql = "SELECT id, data_escolhida, mensagem, opcao, status FROM dados ORDER BY id DESC";
+$result = $conn->query($sql);
 
 echo '<h2>Verificação de Solicitações</h2>';
 
@@ -37,9 +47,10 @@ if ($result) {
         while($row = $result->fetch_assoc()) {
             $cardId = "card_" . $row['id'];
             echo "<div class='card' id='$cardId'>";
-            echo "<p><strong>Data:</strong> " . htmlspecialchars($row['data_escolhida']) . "</p>";
-            echo "<p><strong>Opção:</strong> " . htmlspecialchars($row['opcao']) . "</p>";
-            echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($row['mensagem']) . "</p>";
+            echo "<p><strong>Data:</strong> " . htmlspecialchars($row['data_escolhida'] ?? '') . "</p>";
+            echo "<p><strong>Opção:</strong> " . htmlspecialchars($row['opcao'] ?? '') . "</p>";
+            echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($row['mensagem'] ?? '') . "</p>";
+            echo "<p><strong>Status:</strong> " . htmlspecialchars($row['status'] ?? '') . "</p>";
 
             echo "<div>";
             echo "<button class='btn' onclick=\"processarAcao('aceitar', " . $row['id'] . ", '$cardId')\">Aceitar</button>";
@@ -55,16 +66,18 @@ if ($result) {
     echo "<p>Erro ao consultar solicitações: " . htmlspecialchars($conn->error) . "</p>";
 }
 
+
 $conn->close();
 ?>
 
 <script>
 function processarAcao(acao, id, cardId) {
-    if (!confirm('Tem certeza que deseja ' + acao + ' esta solicitação')) return;
+    if (!confirm('Tem certeza que deseja ' + acao + ' esta solicitação?')) return;
 
     fetch('verificar.php?acao=' + acao + '&id=' + id)
         .then(response => {
             if (response.ok) {
+                // Aqui removemos o card da tela, mas você pode fazer atualizar status ou outra coisa
                 document.getElementById(cardId).remove();
             } else {
                 alert('Erro ao processar a ação.');
@@ -76,3 +89,18 @@ function processarAcao(acao, id, cardId) {
         });
 }
 </script>
+
+<style>
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #fafafa;
+}
+.btn {
+    margin-right: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+</style>

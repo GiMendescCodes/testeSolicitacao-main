@@ -1,9 +1,80 @@
+<?php
+$conn = new mysqli("localhost", "root", "", "solicitacaoo");
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
+}
+
+// Pega os últimos 6 registros para histórico
+$sql = "SELECT id, data_escolhida, opcao, status FROM dados ORDER BY id DESC LIMIT 6";
+$result = $conn->query($sql);
+
+// Próxima folga aceita e futura
+$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND status = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+$resultFolga = $conn->query($sqlFolga);
+$proxFolga = null;
+if ($resultFolga && $resultFolga->num_rows > 0) {
+    $rowFolga = $resultFolga->fetch_assoc();
+    $proxFolga = $rowFolga['data_escolhida'];
+}
+
+// Próxima férias aceita e futura
+$sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND status = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+$resultFerias = $conn->query($sqlFerias);
+$proxFerias = null;
+if ($resultFerias && $resultFerias->num_rows > 0) {
+    $rowFerias = $resultFerias->fetch_assoc();
+    $proxFerias = $rowFerias['data_escolhida'];
+}
+
+// Calcula semanas restantes
+$hoje = new DateTime();
+$semanasFolga = null;
+$semanasFerias = null;
+if ($proxFolga) {
+    $diff = $hoje->diff(new DateTime($proxFolga));
+    $semanasFolga = ceil($diff->days / 7);
+}
+if ($proxFerias) {
+    $diff = $hoje->diff(new DateTime($proxFerias));
+    $semanasFerias = ceil($diff->days / 7);
+}
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<title>Solicitações</title>
 <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/locales-all.global.min.js"></script>
+<style>
+.dropdown { /* seu estilo aqui */ }
+.card {
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:10px;
+    margin:10px auto;
+    max-width:400px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+}
+.card img {width:40px; height:40px;}
+.info-box {
+    margin: 10px auto;
+    max-width: 400px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+</style>
+</head>
+<body>
 
-<form action="processar.php" method="post">
+<form id="solicitacaoForm">
     <label>Data:</label>
     <input type="date" name="data" required><br>
 
@@ -20,88 +91,39 @@
             <div onclick="selecionarOpcao('Folgas')">Folgas</div>
         </div>
     </div>
-    <input type="hidden" name="opcao" id="opcao-selecionada">
-
-    <input type="hidden" name="tipo" value="solicitacao">
-
+    <input type="hidden" name="opcao" id="opcao-selecionada" required>
     <button type="submit">Enviar</button>
 </form>
 
-<?php
-$conn = new mysqli("localhost", "root", "", "solicitacaoo");
-
-if ($conn->connect_error) {
-    die("Conexão falhou: " . $conn->connect_error);
-}
-
-$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND STATUS = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
-$resultFolga = $conn->query($sqlFolga);
-$proxFolga = null;
-
-if ($resultFolga !== false && $resultFolga->num_rows > 0) {
-    $row = $resultFolga->fetch_assoc();
-    $proxFolga = $row['data_escolhida'];
-}
-
-$sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND STATUS = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
-$resultFerias = $conn->query($sqlFerias);
-$proxFerias = null;
-
-if ($resultFerias !== false && $resultFerias->num_rows > 0) {
-    $row = $resultFerias->fetch_assoc();
-    $proxFerias = $row['data_escolhida'];
-}
-
-$hoje = new DateTime();
-$semanasFolga = $proxFolga ? ceil($hoje->diff(new DateTime($proxFolga))->days / 7) : null;
-$semanasFerias = $proxFerias ? ceil($hoje->diff(new DateTime($proxFerias))->days / 7) : null;
-
-$sql = "SELECT data_escolhida, opcao, STATUS FROM dados ORDER BY id DESC LIMIT 6";
-$result = $conn->query($sql);
-
-if ($result === false) {
-    die("Erro na consulta SQL: " . $conn->error);
-}
-?>
-
 <h2>Histórico de Solicitações</h2>
-
-<?php
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "<div class='card'>";
-        echo "<div>";
-        echo "<p><strong>Data:</strong> " . htmlspecialchars($row['data_escolhida']) . "</p>";
-        echo "<p><strong>Opção:</strong> " . htmlspecialchars($row['opcao']) . "</p>";
-        echo "</div>";
-
-        $status = $row['STATUS'];
-        if($status == 'pendente'){
-            $img = 'img/pendente.png';
-            $alt = 'Pendente';
-        } elseif($status == 'aceito'){
-            $img = 'img/aprovado.png';
-            $alt = 'Aprovado';
-        } else {
-            $img = 'img/negado.png';
-            $alt = 'Negado';
+<div id="historico">
+    <?php
+    if ($result && $result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $img = match($row['status']) {
+                'pendente' => 'img/pendente.png',
+                'aceito' => 'img/aprovado.png',
+                'negado' => 'img/negado.png',
+                default => 'img/pendente.png'
+            };
+            $alt = ucfirst($row['status']);
+            echo "<div class='card' data-id='{$row['id']}'>
+                    <div>
+                        <p><strong>Data:</strong> ".htmlspecialchars($row['data_escolhida'])."</p>
+                        <p><strong>Opção:</strong> ".htmlspecialchars($row['opcao'])."</p>
+                    </div>
+                    <img src='{$img}' alt='{$alt}'>
+                  </div>";
         }
-
-        echo "<img src='" . htmlspecialchars($img) . "' alt='" . htmlspecialchars($alt) . "'>";
-        echo "</div>";
+    } else {
+        echo "<p>Você ainda não fez nenhuma solicitação.</p>";
     }
-} else {
-    echo "<p>Você ainda não fez nenhuma solicitação.</p>";
-}
+    ?>
+</div>
 
-$conn->close();
-?>
-
-<h2>Calendário de Solicitações</h2>
-<div id='calendar'></div>
-
+<!-- Mostrar as semanas restantes para próxima folga e férias -->
 <div class="info-box">
-    <?php if($semanasFolga !== null): ?>
+    <?php if ($semanasFolga !== null): ?>
         <p>Faltam <strong><?php echo $semanasFolga; ?></strong> semana(s) para a próxima <strong>Folga</strong>.</p>
     <?php else: ?>
         <p>Sem <strong>Folgas</strong> agendadas.</p>
@@ -109,17 +131,20 @@ $conn->close();
 </div>
 
 <div class="info-box">
-    <?php if($semanasFerias !== null): ?>
+    <?php if ($semanasFerias !== null): ?>
         <p>Faltam <strong><?php echo $semanasFerias; ?></strong> semana(s) para as próximas <strong>Férias</strong>.</p>
     <?php else: ?>
         <p>Sem <strong>Férias</strong> agendadas.</p>
     <?php endif; ?>
 </div>
 
+<h2>Calendário de Solicitações</h2>
+<div id='calendar'></div>
+
 <script>
 function toggleDropdown() {
-    var dropdown = document.getElementById('dropdown-options');
-    var isOpen = dropdown.style.display === 'block';
+    let dropdown = document.getElementById('dropdown-options');
+    let isOpen = dropdown.style.display === 'block';
     dropdown.style.display = isOpen ? 'none' : 'block';
     document.querySelector('.dropdown').setAttribute('aria-expanded', !isOpen);
 }
@@ -130,6 +155,39 @@ function selecionarOpcao(opcao) {
     document.getElementById('dropdown-options').style.display = 'none';
     document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
 }
+
+document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('processar.php', {
+        method: 'POST',
+        body: formData
+    }).then(resp => resp.json())
+    .then(data => {
+        if(data.success) {
+            const historico = document.getElementById('historico');
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.id = data.id;
+
+            card.innerHTML = `
+                <div>
+                    <p><strong>Data:</strong> ${data.data}</p>
+                    <p><strong>Opção:</strong> ${data.opcao}</p>
+                </div>
+                <img src="img/pendente.png" alt="Pendente">
+            `;
+            historico.prepend(card);
+
+            this.reset();
+            document.getElementById('selected-option').innerText = 'Escolha uma opção ▼';
+        } else {
+            alert(data.message || 'Erro ao enviar solicitação');
+        }
+    }).catch(() => alert('Erro na comunicação com o servidor.'));
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
@@ -144,3 +202,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+</body>
+</html>

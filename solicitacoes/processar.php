@@ -1,60 +1,36 @@
 <?php
+// processar.php
+header('Content-Type: application/json');
 $conn = new mysqli("localhost", "root", "", "solicitacaoo");
-
 if ($conn->connect_error) {
-    die("Conexão falhou: " . $conn->connect_error);
+    echo json_encode(['success' => false, 'message' => 'Erro na conexão']);
+    exit;
 }
 
-$data = $_POST['data'];
-$mensagem = $_POST['mensagem'];
-$opcao = $_POST['opcao'];
+$data = $_POST['data'] ?? '';
+$mensagem = $_POST['mensagem'] ?? '';
+$opcao = $_POST['opcao'] ?? '';
 
-$arquivo = null;
-if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
-    $pasta = 'uploads/';
-    if (!is_dir($pasta)) {
-        mkdir($pasta, 0777, true);
-    }
-
-    $nomeArquivo = basename($_FILES['arquivo']['name']);
-    $destino = $pasta . $nomeArquivo;
-
-    if (move_uploaded_file($_FILES['arquivo']['tmp_name'], $destino)) {
-        $arquivo = $nomeArquivo;
-    } else {
-        die("Erro ao enviar o arquivo.");
-    }
+if (!$data || !$mensagem || !$opcao) {
+    echo json_encode(['success' => false, 'message' => 'Preencha todos os campos']);
+    exit;
 }
 
-$status = 'pendente';
-
-if ($arquivo !== null) {
-    $sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS, arquivo) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-
-    if (!$stmt) {
-        die("Erro na preparação: " . $conn->error);
-    }
-
-    $stmt->bind_param("sssss", $data, $mensagem, $opcao, $status, $arquivo);
-} else {
-    $sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-
-    if (!$stmt) {
-        die("Erro na preparação: " . $conn->error);
-    }
-
-    $stmt->bind_param("ssss", $data, $mensagem, $opcao, $status);
-}
+$stmt = $conn->prepare("INSERT INTO dados (data_escolhida, opcao, mensagem, status) VALUES (?, ?, ?, 'pendente')");
+$stmt->bind_param("sss", $data, $opcao, $mensagem);
 
 if ($stmt->execute()) {
-    header("Location: index.php?sucesso=1");
-    exit;
+    $id = $stmt->insert_id;
+    // Retorna os dados para adicionar no histórico sem recarregar
+    echo json_encode([
+        'success' => true,
+        'data' => $data,
+        'opcao' => $opcao,
+        'status' => 'pendente',
+        'id' => $id
+    ]);
 } else {
-    echo "Erro: " . $stmt->error;
+    echo json_encode(['success' => false, 'message' => 'Erro ao salvar solicitação']);
 }
-
 $stmt->close();
 $conn->close();
-?>

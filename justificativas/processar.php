@@ -1,50 +1,47 @@
 <?php
 $conn = new mysqli("localhost", "root", "", "solicitacaoo");
-
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-$data = $_POST['data'];
-$mensagem = $_POST['mensagem'];
-$opcao = $_POST['opcao'];
+$data = $_POST['data'] ?? null;
+$mensagem = $_POST['mensagem'] ?? null;
+$opcao = $_POST['opcao'] ?? null;
 
-$arquivo = null;
-if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
-    $pasta = 'uploads/';
-    if (!is_dir($pasta)) {
-        mkdir($pasta, 0777, true);
-    }
-
-    $nomeArquivo = basename($_FILES['arquivo']['name']);
-    $destino = $pasta . $nomeArquivo;
-
-    if (move_uploaded_file($_FILES['arquivo']['tmp_name'], $destino)) {
-        $arquivo = $nomeArquivo;
-    } else {
-        die("Erro ao enviar o arquivo.");
-    }
-} else {
-    $arquivo = null;
-}
-
-$sql = "INSERT INTO justificativas (data_escolhida, mensagem, opcao, arquivo) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-
-if (!$stmt) {
-    die("Erro na preparação: " . $conn->error);
+if (!$data || !$mensagem || !$opcao) {
+    echo "<script>alert('Preencha todos os campos obrigatórios.'); window.history.back();</script>";
+    exit;
 }
 
 
-$stmt->bind_param("ssss", $data, $mensagem, $opcao, $arquivo);
+$targetFilePath = null;
+
+if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] === UPLOAD_ERR_OK) {
+    $targetDir = "uploads/";
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0755, true);
+    }
+    $filename = basename($_FILES['arquivo']['name']);
+    $targetFilePath = $targetDir . uniqid() . "_" . $filename;
+
+    if (!move_uploaded_file($_FILES['arquivo']['tmp_name'], $targetFilePath)) {
+        die("Erro ao salvar o arquivo.");
+    }
+}
+
+$status = 'pendente';
+
+$arquivoDB = $targetFilePath ?? '';
+
+$stmt = $conn->prepare("INSERT INTO justificativas (data_escolhida, mensagem, opcao, arquivo, status) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("sssss", $data, $mensagem, $opcao, $arquivoDB, $status);
 
 if ($stmt->execute()) {
-    header("Location: index.php?sucesso=1");
+    $stmt->close();
+    $conn->close();
+    header("Location: index.php"); // ajuste o redirecionamento para sua página
     exit;
 } else {
-    echo "Erro: " . $stmt->error;
+    die("Erro ao salvar justificativa: " . $conn->error);
 }
-
-$stmt->close();
-$conn->close();
 ?>
