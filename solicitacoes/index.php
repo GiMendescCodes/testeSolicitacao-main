@@ -8,10 +8,10 @@
     <input type="date" name="data" required><br>
 
     <label>Mensagem:</label>
-    <input type="text" name="mensagem" required><br>
+    <input type="text" name="mensagem" required autocomplete="off"><br>
 
     <label>Opção:</label>
-    <div class="dropdown" onclick="toggleDropdown()">
+    <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
         <div class="dropdown-btn" id="selected-option">Escolha uma opção ▼</div>
         <div id="dropdown-options" style="display: none;">
             <div onclick="selecionarOpcao('Home office')">Home office</div>
@@ -22,7 +22,7 @@
     </div>
     <input type="hidden" name="opcao" id="opcao-selecionada">
 
-    <input type="hidden" name="tipo" value="solicitacao"> <!-- Novo: para identificar no processar -->
+    <input type="hidden" name="tipo" value="solicitacao">
 
     <button type="submit">Enviar</button>
 </form>
@@ -34,32 +34,29 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-
-$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND STATUS = 'aceito' AND tipo = 'solicitacao' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND STATUS = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFolga = $conn->query($sqlFolga);
 $proxFolga = null;
 
-if ($resultFolga->num_rows > 0) {
+if ($resultFolga !== false && $resultFolga->num_rows > 0) {
     $row = $resultFolga->fetch_assoc();
     $proxFolga = $row['data_escolhida'];
 }
 
-
-$sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND STATUS = 'aceito' AND tipo = 'solicitacao' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+$sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND STATUS = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFerias = $conn->query($sqlFerias);
 $proxFerias = null;
 
-if ($resultFerias->num_rows > 0) {
+if ($resultFerias !== false && $resultFerias->num_rows > 0) {
     $row = $resultFerias->fetch_assoc();
     $proxFerias = $row['data_escolhida'];
 }
 
-// Calcula semanas
 $hoje = new DateTime();
 $semanasFolga = $proxFolga ? ceil($hoje->diff(new DateTime($proxFolga))->days / 7) : null;
 $semanasFerias = $proxFerias ? ceil($hoje->diff(new DateTime($proxFerias))->days / 7) : null;
 
-$sql = "SELECT data_escolhida, opcao, STATUS FROM dados WHERE tipo = 'solicitacao' ORDER BY id DESC LIMIT 6";
+$sql = "SELECT data_escolhida, opcao, STATUS FROM dados ORDER BY id DESC LIMIT 6";
 $result = $conn->query($sql);
 
 if ($result === false) {
@@ -90,11 +87,11 @@ if ($result->num_rows > 0) {
             $alt = 'Negado';
         }
 
-        echo "<img src='$img' alt='$alt'>";
+        echo "<img src='" . htmlspecialchars($img) . "' alt='" . htmlspecialchars($alt) . "'>";
         echo "</div>";
     }
 } else {
-    echo "<p>Nenhuma solicitação encontrada.</p>";
+    echo "<p>Você ainda não fez nenhuma solicitação.</p>";
 }
 
 $conn->close();
@@ -122,90 +119,28 @@ $conn->close();
 <script>
 function toggleDropdown() {
     var dropdown = document.getElementById('dropdown-options');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    var isOpen = dropdown.style.display === 'block';
+    dropdown.style.display = isOpen ? 'none' : 'block';
+    document.querySelector('.dropdown').setAttribute('aria-expanded', !isOpen);
 }
 
 function selecionarOpcao(opcao) {
     document.getElementById('opcao-selecionada').value = opcao;
     document.getElementById('selected-option').innerText = opcao + ' ▼';
     document.getElementById('dropdown-options').style.display = 'none';
+    document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        locale: 'pt-br',
-        initialView: 'dayGridMonth',
-        events: 'eventos.php?tipo=solicitacao',
-        eventDisplay: 'block'
-    });
-
-    calendar.render();
+    if (calendarEl) {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'pt-br',
+            initialView: 'dayGridMonth',
+            events: 'eventos.php?',
+            eventDisplay: 'block'
+        });
+        calendar.render();
+    }
 });
 </script>
-
-<style>
-#calendar {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 10px;
-    height: 600px; /* importante para o calendário aparecer */
-}
-
-.dropdown {
-    width: 200px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 5px;
-    background: white;
-    margin-bottom: 10px;
-}
-
-.dropdown-btn {
-    font-weight: bold;
-}
-
-#dropdown-options div {
-    padding: 10px;
-    background: #f9f9f9;
-    cursor: pointer;
-}
-
-#dropdown-options div:hover {
-    background: #e0e0e0;
-}
-
-.card {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 15px auto;
-    max-width: 400px;
-    background: #fff;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.card img {
-    width: 50px;
-    height: 50px;
-}
-
-.info-box {
-    border: 2px solid #007BFF;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px auto;
-    max-width: 400px;
-    background: #f0f8ff;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-}
-</style>

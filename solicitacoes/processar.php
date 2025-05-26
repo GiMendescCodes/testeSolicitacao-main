@@ -9,7 +9,6 @@ $data = $_POST['data'];
 $mensagem = $_POST['mensagem'];
 $opcao = $_POST['opcao'];
 
-
 $arquivo = null;
 if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
     $pasta = 'uploads/';
@@ -27,25 +26,26 @@ if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
     }
 }
 
+$status = 'pendente';
 
 if ($arquivo !== null) {
-    $sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS, arquivo, tipo) VALUES (?, ?, ?, 'pendente', ?, ?)";
+    $sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS, arquivo) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
         die("Erro na preparação: " . $conn->error);
     }
 
-    $stmt->bind_param("sssss", $data, $mensagem, $opcao,;
+    $stmt->bind_param("sssss", $data, $mensagem, $opcao, $status, $arquivo);
 } else {
-    $sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS) VALUES (?, ?, ?, 'pendente')";
+    $sql = "INSERT INTO dados (data_escolhida, mensagem, opcao, STATUS) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
         die("Erro na preparação: " . $conn->error);
     }
 
-    $stmt->bind_param("ssss", $data, $mensagem, $opcao);
+    $stmt->bind_param("ssss", $data, $mensagem, $opcao, $status);
 }
 
 if ($stmt->execute()) {

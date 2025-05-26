@@ -39,9 +39,6 @@ if ($result->num_rows > 0) {
     }
 }
 
-// Feriados exemplo:
-$eventos[] = ['title' => 'Natal', 'start' => '2025-12-25', 'color' => '#f4cccc'];
-$eventos[] = ['title' => 'Ano Novo', 'start' => '2026-01-01', 'color' => '#f4cccc'];
 
 header('Content-Type: application/json');
 echo json_encode($eventos);

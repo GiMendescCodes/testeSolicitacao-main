@@ -25,6 +25,14 @@
 </form>
 
 <?php
+
+$data_escolhida = $_POST['data'] ?? null;
+
+if (empty($data_escolhida)) {
+    die("Erro: data_escolhida é obrigatória.");
+}
+
+
 $conn = new mysqli("localhost", "root", "", "solicitacao");
 
 if ($conn->connect_error) {
@@ -96,7 +104,7 @@ document.addEventListener('click', function(event) {
 
 <style>
 .dropdown {
-    width: 250px;
+    width: 200px;
     border: 1px solid #ccc;
     padding: 10px;
     position: relative;

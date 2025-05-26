@@ -5,32 +5,10 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-if (isset($_GET['acao']) && isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $acao = $_GET['acao'];
-
-    if ($acao == 'aceitar') {
-        $novo_status = 'aceito';
-    } elseif ($acao == 'negar') {
-        $novo_status = 'negado';
-    } else {
-        $novo_status = 'pendente';
-    }
-
-    $sql = "UPDATE dados SET STATUS=? WHERE id=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $novo_status, $id);
-    $stmt->execute();
-    $stmt->close();
-
-    header("Location: verificar.php");
-    exit;
-}
-$sql = "SELECT id, data_escolhida, mensagem, opcao, arquivo FROM dados WHERE tipo = 'justificativa' ORDER BY id DESC";
+$sql = "SELECT id, data_escolhida, mensagem, opcao FROM justificativas ORDER BY id DESC";
 $result = $conn->query($sql);
-?>
 
-<style>
+echo '<style>
 .card {
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -40,32 +18,62 @@ $result = $conn->query($sql);
     background: #fff;
     box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
 }
-.card button {
+.btn {
+    display: inline-block;
+    padding: 5px 10px;
     margin-right: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-</style>
+</style>';
 
-<h2>Verificação de Justificativas</h2>
+echo '<h2>Verificação de Justificativas</h2>';
 
-<?php
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "<div class='card'>";
-        echo "<p><strong>Data:</strong> " . htmlspecialchars($row['data_escolhida']) . "</p>";
-        echo "<p><strong>Opção:</strong> " . htmlspecialchars($row['opcao']) . "</p>";
-        echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($row['mensagem']) . "</p>";
+if ($result) {
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $cardId = "card_" . $row['id'];
+            echo "<div class='card' id='$cardId'>";
+            echo "<p><strong>Data:</strong> " . htmlspecialchars($row['data_escolhida']) . "</p>";
+            echo "<p><strong>Opção:</strong> " . htmlspecialchars($row['opcao']) . "</p>";
+            echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($row['mensagem']) . "</p>";
 
-        // Botões de ação
-        echo "<div>";
-        echo "<a href='verificar.php?acao=aceitar&id=" . $row['id'] . "'><button>Aceitar</button></a>";
-        echo "<a href='verificar.php?acao=negar&id=" . $row['id'] . "'><button>Negar</button></a>";
-        echo "</div>";
+            echo "<div>";
+            echo "<button class='btn' onclick=\"processarAcao('aceitar', " . $row['id'] . ", '$cardId')\">Aceitar</button>";
+            echo "<button class='btn' onclick=\"processarAcao('negar', " . $row['id'] . ", '$cardId')\">Negar</button>";
+            echo "</div>";
 
-        echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "<p>Nenhuma justificativa para verificar.</p>";
     }
 } else {
-    echo "<p>Nenhuma justificativa para verificar.</p>";
+    echo "<p>Erro ao consultar justificativas: " . htmlspecialchars($conn->error) . "</p>";
 }
 
 $conn->close();
 ?>
+
+<script>
+function processarAcao(acao, id, cardId) {
+    if (!confirm('Tem certeza que deseja ' + acao + ' esta justificativa?')) return;
+
+    fetch('verificar.php?acao=' + acao + '&id=' + id)
+        .then(response => {
+            if (response.ok) {
+                // ✅ Remove o card da tela
+                document.getElementById(cardId).remove();
+            } else {
+                alert('Erro ao processar a ação.');
+            }
+        })
+        .catch(error => {
+            alert('Erro de conexão.');
+            console.error(error);
+        });
+}
+</script>

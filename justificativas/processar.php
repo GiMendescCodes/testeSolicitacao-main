@@ -10,7 +10,6 @@ $mensagem = $_POST['mensagem'];
 $opcao = $_POST['opcao'];
 
 $arquivo = null;
-
 if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
     $pasta = 'uploads/';
     if (!is_dir($pasta)) {
@@ -21,21 +20,23 @@ if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] == 0) {
     $destino = $pasta . $nomeArquivo;
 
     if (move_uploaded_file($_FILES['arquivo']['tmp_name'], $destino)) {
-        $arquivo = $nomeArquivo;  // Guarda apenas o nome no banco
+        $arquivo = $nomeArquivo;
     } else {
         die("Erro ao enviar o arquivo.");
     }
+} else {
+    $arquivo = null;
 }
 
-// Inserção incluindo o campo tipo
-$sql = "INSERT INTO justificativas (data_escolhida, mensagem, opcao, STATUS, arquivo) VALUES (?, ?, ?, 'pendente', ?, ?)";
+$sql = "INSERT INTO justificativas (data_escolhida, mensagem, opcao, arquivo) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
     die("Erro na preparação: " . $conn->error);
 }
 
-$stmt->bind_param("sssss", $data, $mensagem, $opcao, $arquivo, $tipo);
+
+$stmt->bind_param("ssss", $data, $mensagem, $opcao, $arquivo);
 
 if ($stmt->execute()) {
     header("Location: index.php?sucesso=1");
