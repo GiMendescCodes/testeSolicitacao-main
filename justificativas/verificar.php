@@ -140,7 +140,6 @@ $conn->close();
 ?>
 
 <script>
-// Função para aceitar/negar e atualizar status dinamicamente
 function processarAcao(acao, id, cardId) {
     if (!confirm('Tem certeza que deseja ' + acao + ' esta justificativa?')) return;
 
@@ -157,8 +156,6 @@ function processarAcao(acao, id, cardId) {
             console.error(error);
         });
 }
-
-// Atualiza o status exibido de um card específico
 function atualizarStatusDoCard(id) {
     fetch('verificar.php?acao=status&id=' + id)
         .then(res => res.json())
@@ -171,8 +168,6 @@ function atualizarStatusDoCard(id) {
             }
         });
 }
-
-// Atualiza o status de todos os cards visíveis a cada 5 segundos
 function atualizarTodosStatus() {
     const spans = document.querySelectorAll('.status-text');
     spans.forEach(span => {
@@ -181,21 +176,5 @@ function atualizarTodosStatus() {
     });
 }
 
-// Atualiza status a cada 5 segundos
 setInterval(atualizarTodosStatus, 5000);
 </script>
-
-<style>
-.card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 10px 0;
-    background-color: #fafafa;
-}
-.btn {
-    margin-right: 10px;
-    padding: 6px 12px;
-    cursor: pointer;
-}
-</style>
