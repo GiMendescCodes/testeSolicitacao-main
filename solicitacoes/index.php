@@ -214,10 +214,6 @@ if ($proxFerias) {
         flex-shrink: 0;
     }
 
-    .status-aceito { background: #48bb78; }
-    .status-pendente { background: #ed8936; }
-    .status-negado { background: #f56565; }
-
     /* Calendário */
     .calendar-section {
         background: white;
@@ -445,7 +441,7 @@ if ($proxFerias) {
         <div class="count-cards">
             <div class="count-card">
                 <div class="image-placeholder">
-                    Inserir imagem de férias
+                    <img src="img/ferias.png" />
                 </div>
                 <div class="count-number"><?php echo ($semanasFerias ?? '30'); ?></div>
                 <div class="count-text">semanas para as suas férias</div>
@@ -453,7 +449,7 @@ if ($proxFerias) {
             
             <div class="count-card">
                 <div class="image-placeholder">
-                    Inserir imagem de folga
+                    <img src="img/folga.png" />
                 </div>
                 <div class="count-number"><?php echo ($semanasFolga ?? '01'); ?></div>
                 <div class="count-text">semana para a próxima folga</div>
@@ -462,17 +458,20 @@ if ($proxFerias) {
 
         <!-- Histórico -->
         <div class="history-section">
+            <div class="Thist">
             <h2>Histórico de solicitações</h2>
+            </div>
             <div id="historico">
                 <?php
                 if ($result && $result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         $statusClass = 'status-' . $row['status'];
                         $statusIcon = match($row['status']) {
-                            'pendente' => '●',
-                            'aceito' => '✓',
-                            'negado' => '✗',
-                            default => '●'
+                        'pendente' => '<img src="img/pendente.png" alt="">',
+                        'aceito' => '<img src="img/aprovado.png" alt="">',
+                        'negado' => '✗ <img src="img/negado.png" alt="">',
+                        default => '● <img src="img/pendente.png" alt="">',
+
                         };
                         $date = new DateTime($row['data_escolhida']);
                         $formattedDate = $date->format('d/m');
