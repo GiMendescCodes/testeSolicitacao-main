@@ -4,11 +4,9 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Pega os últimos 6 registros para histórico
 $sql = "SELECT id, data_escolhida, opcao, status FROM dados ORDER BY id DESC LIMIT 6";
 $result = $conn->query($sql);
 
-// Próxima folga aceita e futura
 $sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND status = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFolga = $conn->query($sqlFolga);
 $proxFolga = null;
@@ -17,7 +15,6 @@ if ($resultFolga && $resultFolga->num_rows > 0) {
     $proxFolga = $rowFolga['data_escolhida'];
 }
 
-// Próxima férias aceita e futura
 $sqlFerias = "SELECT data_escolhida FROM dados WHERE opcao = 'Férias' AND status = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFerias = $conn->query($sqlFerias);
 $proxFerias = null;
@@ -26,7 +23,6 @@ if ($resultFerias && $resultFerias->num_rows > 0) {
     $proxFerias = $rowFerias['data_escolhida'];
 }
 
-// Calcula semanas restantes
 $hoje = new DateTime();
 $semanasFolga = null;
 $semanasFerias = null;
@@ -51,6 +47,7 @@ if ($proxFerias) {
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/locales-all.global.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
     * {
         margin: 0;
@@ -60,17 +57,35 @@ if ($proxFerias) {
 
     body {
         font-family: 'Inter', sans-serif;
-        background: #f5f7fa;
+        background: #EEEEFF;
         padding: 20px;
         color: #333;
     }
+    .perfil {
+background-image: url(./img/bola.png);
+      display: flex;
+      align-items: center;
+      border-radius: 40px;
+      margin-top: 50px;
+      width: 65px;
+      height: 68px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
 
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
+.person {
+background-image: url(./img/person.png);
+width: 35px;
+height: 28px;
+margin-left: 3px
+}
+    .tudo {
+        margin-left: 150px;
+        padding: 20px;
+        width: 1200px; /* largura fixa */
     }
 
-    /* Header */
     .header {
         display: flex;
         align-items: center;
@@ -79,9 +94,9 @@ if ($proxFerias) {
     }
 
     .logo {
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
         border-radius: 12px;
         display: flex;
         align-items: center;
@@ -90,8 +105,13 @@ if ($proxFerias) {
         font-size: 20px;
     }
 
+    .logo img {
+        width: 20px;
+        height: 20px;
+    }
+
     .header-text h1 {
-        font-size: 2rem;
+        font-size: 32px;
         font-weight: 600;
         color: #1a202c;
         margin-bottom: 4px;
@@ -99,122 +119,128 @@ if ($proxFerias) {
 
     .header-text p {
         color: #718096;
-        font-size: 1rem;
+        font-size: 16px;
     }
+.main-grid {
+    display: grid;
+    grid-template-columns: 300px 550px 350px; /* Se precisar ajuste o tamanho */
+    gap: 25px;
+    margin-bottom: 30px;
+}
 
-    /* Main Grid Layout */
-    .main-grid {
-        display: grid;
-        grid-template-columns: 300px 1fr 350px;
-        gap: 25px;
-        margin-bottom: 30px;
-    }
+.count-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-    /* Cards de Contagem */
-    .count-cards {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+.count-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 0; /* Remover padding do card */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: none;
+    position: relative; /* Para posicionar o texto sobre a imagem */
+    width: fit-content;
+    overflow: hidden;
+}
 
-    .count-card {
-        background: white;
-        border-radius: 16px;
-        padding: 25px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e2e8f0;
-    }
+.count-card .image-placeholder {
+    width: 100%;
+    height: auto;
+}
 
-    .count-card .image-placeholder {
-        width: 120px;
-        height: 80px;
-        background: #f7fafc;
-        border: 2px dashed #cbd5e0;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 15px;
-        color: #a0aec0;
-        font-size: 12px;
-    }
+.count-card .image-placeholder img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
-    .count-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #667eea;
-        margin-bottom: 5px;
-    }
+.contagemT {
+    position: absolute; /* Posicionar sobre a imagem */
+    top: 20px; /* Ajuste conforme necessário */
+    left: 20px; /* Ajuste conforme necessário */
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: #5A4AE3;
+}
 
-    .count-text {
-        color: #4a5568;
-        font-size: 0.9rem;
-        line-height: 1.4;
-    }
+.count-number {
+    font-size: 64px; 
+    font-weight: 700;
+    color: #5A4AE3;
+    line-height: 1;
+}
 
-    /* Histórico */
-    .history-section {
-        background: white;
-        border-radius: 16px;
-        padding: 25px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e2e8f0;
-    }
+.count-text {
+    color: #333333;
+    font-size: 14px; 
+    font-family: 'Montserrat Alternates', sans-serif;
+    line-height: 1.2;
+    font-weight: 500;
+}
 
-    .history-section h2 {
-        color: #2d3748;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 20px;
-    }
 
-    .history-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
 
-    .history-item:last-child {
-        border-bottom: none;
-    }
+.history-section {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 600px;
+    font-family: Arial, sans-serif;
+    border: 2px solid #9998FF;
+}
 
-    .history-date {
-        background: #667eea;
-        color: white;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 500;
-        min-width: 50px;
-        text-align: center;
-    }
+.tituloH {
+    background-color: #9998FF;
+    width: 100%;
+    padding: 16px 0;
+    text-align: center;
+}
 
-    .history-content {
-        flex: 1;
-    }
+.tituloH h2 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.5rem;
+}
 
-    .history-content p {
-        color: #4a5568;
-        font-size: 0.85rem;
-        line-height: 1.4;
-        margin: 0;
-    }
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px; /* padding interno só nos itens */
+    border-bottom: 1px solid #9998FF;
+}
 
-    .status-icon {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        color: white;
-        flex-shrink: 0;
-    }
+.history-item:last-child {
+    border-bottom: none;
+}
 
-    /* Calendário */
+.history-date {
+    font-weight: bold;
+    margin-right: 10px;
+    min-width: 50px;
+}
+
+.history-content {
+    flex: 1; /* ocupa o espaço disponível */
+    text-align: left; /* garante alinhamento à esquerda */
+}
+
+.history-content p {
+    margin: 0;
+}
+
+.status-icon img {
+    width: 40px;
+    height: 40px;
+}
+
+
+
+
     .calendar-section {
         background: white;
         border-radius: 16px;
@@ -231,7 +257,7 @@ if ($proxFerias) {
     }
 
     .calendar-title {
-        font-size: 1.1rem;
+        font-size: 18px;
         font-weight: 600;
         color: #2d3748;
     }
@@ -258,7 +284,6 @@ if ($proxFerias) {
         background: #edf2f7;
     }
 
-    /* Formulário */
     .form-section {
         background: white;
         border-radius: 16px;
@@ -269,7 +294,7 @@ if ($proxFerias) {
 
     .form-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 300px 300px; /* tamanhos fixos */
         gap: 20px;
         margin-bottom: 20px;
     }
@@ -281,7 +306,7 @@ if ($proxFerias) {
 
     .form-group label {
         color: #4a5568;
-        font-size: 0.9rem;
+        font-size: 14px;
         font-weight: 500;
         margin-bottom: 8px;
         display: flex;
@@ -293,8 +318,7 @@ if ($proxFerias) {
         padding: 12px 14px;
         border: 1px solid #e2e8f0;
         border-radius: 8px;
-        font-size: 0.9rem;
-        transition: border-color 0.2s ease;
+        font-size: 14px;
         background: white;
     }
 
@@ -318,12 +342,8 @@ if ($proxFerias) {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.9rem;
+        font-size: 14px;
         color: #4a5568;
-    }
-
-    .dropdown-btn:hover {
-        border-color: #667eea;
     }
 
     .dropdown-options {
@@ -342,7 +362,7 @@ if ($proxFerias) {
     .dropdown-options div {
         padding: 10px 14px;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 14px;
         color: #4a5568;
     }
 
@@ -356,7 +376,7 @@ if ($proxFerias) {
 
     .message-input {
         min-height: 100px;
-        resize: vertical;
+        resize: none; /* evita esticar e deformar */
         font-family: inherit;
     }
 
@@ -366,10 +386,9 @@ if ($proxFerias) {
         border: none;
         padding: 12px 30px;
         border-radius: 8px;
-        font-size: 0.9rem;
+        font-size: 14px;
         font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.2s ease;
         align-self: flex-start;
     }
 
@@ -377,9 +396,8 @@ if ($proxFerias) {
         background: #5a67d8;
     }
 
-    /* FullCalendar customizations */
     .fc {
-        font-size: 0.85rem;
+        font-size: 14px;
     }
 
     .fc-header-toolbar {
@@ -399,66 +417,140 @@ if ($proxFerias) {
         background: rgba(102, 126, 234, 0.05);
     }
 
-    /* Responsive */
-    @media (max-width: 1200px) {
-        .main-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .count-cards {
-            flex-direction: row;
-            justify-content: center;
-        }
+    .fixo {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    @media (max-width: 768px) {
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-        
-        .count-cards {
-            flex-direction: column;
-        }
+    .sidebar {
+        width: 70px;
+        background-color: #6c63ff;
+        height: 420px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 40px;
+    }
+
+    .menu-item {
+        width: 50px;
+        height: 50px;
+        margin: 25px 0;
+        background: none;
+        border: none;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .menu-item .icon {
+        width: 100%;
+        height: 100%;
+        display: block;
+        mask-size: cover;
+        -webkit-mask-size: cover;
+        background-color: white;
+    }
+
+    .icon.home { mask: url('./img/home.png') no-repeat center; }
+    .icon.notebook { mask: url('./img/justificativas.png') no-repeat center; }
+    .icon.cap { mask: url('./img/cursos.png') no-repeat center; }
+    .icon.chart { mask: url('./img/desempenho.png') no-repeat center; }
+    .icon.phone { mask: url('./img/solicitacoes.png') no-repeat center; }
+
+    .icon-circle {
+        width: 55px;
+        height: 80px;
+        background-color: #4d47c3;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .icon-circle img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .tituloH {
+        background-color: #9998FF;
+        width: 100%;
+        font-size: 20px;
+        text-align: center;
     }
 </style>
+
 </head>
 <body>
+  <div class="fixo">
+    <img class="logo" src="./img/augebit.png" alt="">
+    <div class="sidebar">
+      <a href="" class="menu-item">
+        <span class="icon home"></span>
+      </a>
+      <a href="notebook.html" class="menu-item">
+        <span class="icon notebook"></span>
+      </a>
+      <a href="cap.html" class="menu-item">
+        <span class="icon cap"></span>
+      </a>
+      <a href="chart.html" class="menu-item">
+        <span class="icon chart"></span>
+      </a>
+      <div class="icon-circle">
+        <img src="img/calendario.png" alt="">
+      </div>
+    </div>
+          <div class="perfil">
+        <a class="person" href=""></a>
+      </div>
+  </div>
 
-<div class="container">
+  <div class="tudo">
+    <div class="container">
     <!-- Header -->
     <div class="header">
-        <div class="logo">📋</div>
         <div class="header-text">
             <h1>Olá, Giovanna!</h1>
             <p>Acompanhe seus solicitamentos</p>
         </div>
     </div>
-
+    </div>
     <!-- Main Grid Layout -->
     <div class="main-grid">
         <!-- Cards de Contagem -->
         <div class="count-cards">
             <div class="count-card">
                 <div class="image-placeholder">
-                    <img src="img/ferias.png" />
+                    <img class="imgFe" src="img/ferias.png" />
                 </div>
+                <div class="contagemT">
                 <div class="count-number"><?php echo ($semanasFerias ?? '30'); ?></div>
                 <div class="count-text">semanas para as suas férias</div>
+                </div>
             </div>
             
             <div class="count-card">
                 <div class="image-placeholder">
-                    <img src="img/folga.png" />
+                    <img class="imgFo" src="img/folga.png" />
                 </div>
+                <div class="contagemT">
                 <div class="count-number"><?php echo ($semanasFolga ?? '01'); ?></div>
                 <div class="count-text">semana para a próxima folga</div>
+                </div>
             </div>
         </div>
 
         <!-- Histórico -->
         <div class="history-section">
-            <div class="Thist">
+            <div class="tituloH">
             <h2>Histórico de solicitações</h2>
             </div>
             <div id="historico">
@@ -469,8 +561,8 @@ if ($proxFerias) {
                         $statusIcon = match($row['status']) {
                         'pendente' => '<img src="img/pendente.png" alt="">',
                         'aceito' => '<img src="img/aprovado.png" alt="">',
-                        'negado' => '✗ <img src="img/negado.png" alt="">',
-                        default => '● <img src="img/pendente.png" alt="">',
+                        'negado' => '<img src="img/negado.png" alt="">',
+                        default => '<img src="img/pendente.png" alt="">',
 
                         };
                         $date = new DateTime($row['data_escolhida']);
@@ -537,7 +629,7 @@ if ($proxFerias) {
         </form>
     </div>
 </div>
-
+</div>
 <script>
 function toggleDropdown() {
     let dropdown = document.getElementById('dropdown-options');
@@ -614,5 +706,7 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
+    </div>
+  </div>
 </body>
 </html>
