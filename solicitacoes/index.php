@@ -334,119 +334,117 @@ if ($proxFerias) {
             background: #edf2f7;
         }
 
-        .form-section {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-        }
+.form-section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
+    border: 2px solid rgba(136, 92, 255, 0.3);
+    width: 1260px;
+}
+.opcao{
+    margin-left: -00px;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 300px 300px;
-            /* tamanhos fixos */
-            gap: 20px;
-            margin-bottom: 20px;
-        }
+.form-group label {
+    color: #b0a8d1;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.message-input {
+    width: 1200px;
+}
+.form-input, .dropdown-btn, .message-input {
+    padding: 12px 14px;
+    border: 1px solid rgba(136, 92, 255, 0.2);
+    border-radius: 12px;
+    font-size: 13px;
+    background: #ffffff;
+    color: #a3a3c2;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-input{
+    width: 384px;
+}
+.form-input:focus, .dropdown-btn:focus, .message-input:focus {
+    outline: none;
+    border-color: rgba(136, 92, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(136, 92, 255, 0.2);
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
+.dropdown {
+    position: relative;
+}
 
-        .form-group label {
-            color: #4a5568;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.dropdown-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
 
-        .form-input {
-            padding: 12px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            background: white;
-        }
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid rgba(136, 92, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(136, 92, 255, 0.2);
+    z-index: 1000;
+    margin-top: 5px;
+}
 
-        .form-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
+.dropdown-options div {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #a3a3c2;
+}
 
-        .dropdown {
-            position: relative;
-        }
+.dropdown-options div:hover {
+    background: rgba(136, 92, 255, 0.05);
+}
 
-        .dropdown-btn {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: #4a5568;
-        }
+.message-area {
+    grid-column: 1 / -1;
+}
 
-        .dropdown-options {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            margin-top: 4px;
-        }
+.message-input {
+    min-height: 120px;
+    resize: none;
+    font-family: inherit;
+}
 
-        .dropdown-options div {
-            padding: 10px 14px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #4a5568;
-        }
+.submit-btn {
+    background: #9998FF;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(136, 92, 255, 0.3);
+    transition: background 0.3s, transform 0.2s;
+}
 
-        .dropdown-options div:hover {
-            background: #f7fafc;
-        }
+.submit-btn:hover {
+    background: #EEEEFF;
+    transform: translateY(-2px);
+}
 
-        .message-area {
-            grid-column: 1 / -1;
-        }
-
-        .message-input {
-            min-height: 100px;
-            resize: none;
-            /* evita esticar e deformar */
-            font-family: inherit;
-        }
-
-        .submit-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            align-self: flex-start;
-        }
-
-        .submit-btn:hover {
-            background: #5a67d8;
-        }
 
         .fc {
             font-size: 14px;
@@ -763,11 +761,12 @@ if ($proxFerias) {
             <form id="solicitacaoForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>📅 Data que você deseja marcar a solicitação</label>
+                        <label> <img src="img/calendarioRoxo.png" alt="">Data que você deseja marcar a solicitação</label>
                         <input type="date" name="data" class="form-input" required>
                     </div>
                     <div class="form-group">
-                        <label>🌐 Selecione a opção que melhor descreve sua solicitação</label>
+                   <div class="opcao">
+                        <label> <img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua solicitação</label>
                         <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
                             <div class="dropdown-btn" id="selected-option">
                                 <span>Escolha uma opção</span>
@@ -782,9 +781,10 @@ if ($proxFerias) {
                         </div>
                         <input type="hidden" name="opcao" id="opcao-selecionada" required>
                     </div>
+                    </div>
                 </div>
                 <div class="form-group message-area">
-                    <label>✏️ Explique sua solicitação</label>
+                    <label><img src="img/texto.png" alt=""> Explique sua solicitação</label>
                     <textarea name="mensagem" class="form-input message-input" required autocomplete="off"
                         placeholder="Descreva detalhes da sua solicitação..."></textarea>
                 </div>
