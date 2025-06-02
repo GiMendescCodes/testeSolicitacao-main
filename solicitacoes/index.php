@@ -277,173 +277,149 @@ if ($proxFerias) {
         }
 
 
-
-
-        .calendar-section {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-            height: 465px;
-            width: 415px;
+        /* Garantia que largura inclui bordas e padding */
+        * {
             box-sizing: border-box;
-            overflow: hidden;
-            margin-left: -50px;
         }
 
-        .calendar-table {
-            transform: scale(0.9);
-            /* reduz proporcionalmente */
-            transform-origin: top center;
-            /* define onde a escala ocorre */
+        .form-section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
+            border: 2px solid rgba(136, 92, 255, 0.3);
+            width: 1260px;
         }
 
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .opcao {
+            margin-left: -220px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        .calendar-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        .month-nav {
+        .form-group label {
+            color: #b0a8d1;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
             display: flex;
+            align-items: center;
             gap: 8px;
         }
 
-        .nav-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: #f7fafc;
-            border-radius: 6px;
-            color: #4a5568;
-            cursor: pointer;
+        /* Ajuste: apenas para inputs e dropdowns */
+        .form-input,
+        .dropdown-btn {
+            padding: 12px 14px;
+            border: 1px solid rgba(136, 92, 255, 0.2);
+            border-radius: 12px;
+            font-size: 13px;
+            background: #ffffff;
+            color: #a3a3c2;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input {
+            width: 384px;
+        }
+
+        /* Ajuste: message-area ocupa largura total */
+        .message-area {
+            width: 100%;
+        }
+
+        /* Correção: textarea com largura total e sem conflito */
+        .message-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px 14px;
+            border: 1px solid rgba(136, 92, 255, 0.2);
+            border-radius: 12px;
+            font-size: 13px;
+            background: #ffffff;
+            color: #a3a3c2;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            resize: none;
+            /* Evita distorção */
+        }
+
+        .form-input:focus,
+        .dropdown-btn:focus,
+        .message-input:focus {
+            outline: none;
+            border-color: rgba(136, 92, 255, 0.6);
+            box-shadow: 0 0 0 3px rgba(136, 92, 255, 0.2);
+        }
+
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-btn {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
+            cursor: pointer;
         }
 
-        .nav-btn:hover {
-            background: #edf2f7;
+        .dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid rgba(136, 92, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(136, 92, 255, 0.2);
+            z-index: 1000;
+            margin-top: 5px;
         }
 
-.form-section {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
-    border: 2px solid rgba(136, 92, 255, 0.3);
-    width: 1260px;
-}
-.opcao{
-    margin-left: -00px;
-}
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
-}
+        .dropdown-options div {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #a3a3c2;
+        }
 
-.form-group label {
-    color: #b0a8d1;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.message-input {
-    width: 1200px;
-}
-.form-input, .dropdown-btn, .message-input {
-    padding: 12px 14px;
-    border: 1px solid rgba(136, 92, 255, 0.2);
-    border-radius: 12px;
-    font-size: 13px;
-    background: #ffffff;
-    color: #a3a3c2;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-.form-input{
-    width: 384px;
-}
-.form-input:focus, .dropdown-btn:focus, .message-input:focus {
-    outline: none;
-    border-color: rgba(136, 92, 255, 0.6);
-    box-shadow: 0 0 0 3px rgba(136, 92, 255, 0.2);
-}
+        .dropdown-options div:hover {
+            background: rgba(136, 92, 255, 0.05);
+        }
 
-.dropdown {
-    position: relative;
-}
+        .message-area {
+            grid-column: 1 / -1;
+        }
 
-.dropdown-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-}
+        .message-input {
+            min-height: 120px;
+            resize: none;
+            font-family: inherit;
+        }
 
-.dropdown-options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #ffffff;
-    border: 1px solid rgba(136, 92, 255, 0.2);
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(136, 92, 255, 0.2);
-    z-index: 1000;
-    margin-top: 5px;
-}
+        .submit-btn {
+            background: #9998FF;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(136, 92, 255, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 20px;
+        }
 
-.dropdown-options div {
-    padding: 10px 14px;
-    cursor: pointer;
-    font-size: 13px;
-    color: #a3a3c2;
-}
+        .submit-btn:hover {
+            transform: translateY(-2px);
 
-.dropdown-options div:hover {
-    background: rgba(136, 92, 255, 0.05);
-}
-
-.message-area {
-    grid-column: 1 / -1;
-}
-
-.message-input {
-    min-height: 120px;
-    resize: none;
-    font-family: inherit;
-}
-
-.submit-btn {
-    background: #9998FF;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(136, 92, 255, 0.3);
-    transition: background 0.3s, transform 0.2s;
-}
-
-.submit-btn:hover {
-    background: #EEEEFF;
-    transform: translateY(-2px);
-}
+        }
 
 
         .fc {
@@ -550,92 +526,111 @@ if ($proxFerias) {
             text-align: center;
         }
 
-        /* Fundo do calendário */
-        #calendar {
-            background-color: #F3F4FF;
+        .calendar-section {
+            background: white;
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transform: scale(0.90);
-    transform-origin: top center;
-
-    max-width: 800px; /* largura desejada */
-    max-height: 400px; /* altura máxima */
-    overflow: hidden; /* corta o que passar */
-
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            height: 450px;
+            width: 420px;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin-left: -50px;
         }
 
-        /* Fundo das células */
-        .fc-daygrid-day {
-            background-color: #E0E1FF;
-            /* Fundo pastel */
-            border: 1px solid #9998FF;
-            /* Bordas lilás claro */
+        .calendar-table {
+            transform: scale(0.9);
+            transform-origin: top center;
         }
 
-        /* Texto das datas */
-        .fc-daygrid-day-number {
-            color: #4746D8;
-            /* Azul profundo */
-            font-weight: 600;
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        /* Eventos */
-        .fc-event {
-            background-color: #6E6DFF !important;
-            /* Azul-violeta */
-            color: #FFFFFF !important;
-            border-radius: 8px;
-            padding: 4px 6px;
-            font-size: 12px;
-            border: none;
-        }
-
-        /* Dia atual */
-        .fc-day-today {
-            background-color: #39C9E1 !important;
-            /* Azul turquesa */
-            border-radius: 8px;
-        }
-
-        /* Dias fora do mês */
-        .fc-day-other {
-            background-color: #C7C8FF;
-            /* Lilás muito claro */
-            color: #9998FF;
-            /* Texto lilás suave */
-        }
-
-        /* Cabeçalho dos dias da semana */
-        .fc-col-header-cell {
-            background-color: #F3F4FF;
-            color: #4746D8;
-            font-weight: 700;
-            border: none;
-        }
-
-        /* Título */
         .calendar-title {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
-            color: #4746D8;
-            /* Azul profundo */
+            color: #1C1B6D;
+            margin-bottom: 12px;
         }
 
-        /* Botões de navegação */
+        .month-nav {
+            display: flex;
+            gap: 8px;
+        }
+
         .nav-btn {
-            background: #E0E1FF;
-            color: #4746D8;
+            width: 28px;
+            height: 28px;
             border: none;
+            background: transparent;
+            color: #1C1B6D;
             border-radius: 8px;
-            width: 32px;
-            height: 32px;
             cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: background 0.3s ease;
         }
 
         .nav-btn:hover {
-            background: #C7C8FF;
+            background: rgba(136, 92, 255, 0.1);
+        }
+
+        #calendar,
+        #calendar * {
+            box-sizing: border-box;
+        }
+
+        #calendar {
+            background-color: #F3F4FF;
+            border-radius: 24px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 400px;
+            max-height: 150px;
+            overflow: visible;
+            margin-left: -10px;
+        }
+
+        .fc-daygrid-day {
+            background-color: #7C71F8;
+            border: 1px solid #7C71F8;
+            border-radius: 6px;
+            padding: 4px !important;
+            min-width: 28px !important;
+            min-height: 28px !important;
+        }
+
+        .fc-daygrid-day-number {
+            color: #FFFFFF;
+            font-weight: 500;
+            font-size: 11px;
+        }
+
+        .fc-day-today {
+            background-color: #26C6DA !important;
+            border-radius: 6px;
+            color: #FFFFFF !important;
+        }
+
+        .fc-event {
+            background-color: #4A3FDB !important;
+            color: #FFFFFF !important;
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 9px;
+            border: none;
+        }
+
+        .fc-day-other {
+            background-color: #E0DFFF;
+            color: #7C71F8;
         }
     </style>
 
@@ -761,26 +756,28 @@ if ($proxFerias) {
             <form id="solicitacaoForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label> <img src="img/calendarioRoxo.png" alt="">Data que você deseja marcar a solicitação</label>
+                        <label> <img src="img/calendarioRoxo.png" alt="">Data que você deseja marcar a
+                            solicitação</label>
                         <input type="date" name="data" class="form-input" required>
                     </div>
                     <div class="form-group">
-                   <div class="opcao">
-                        <label> <img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua solicitação</label>
-                        <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
-                            <div class="dropdown-btn" id="selected-option">
-                                <span>Escolha uma opção</span>
-                                <span>▼</span>
+                        <div class="opcao">
+                            <label> <img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
+                                solicitação</label>
+                            <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
+                                <div class="dropdown-btn" id="selected-option">
+                                    <span>Escolha uma opção</span>
+                                    <span>▼</span>
+                                </div>
+                                <div id="dropdown-options" class="dropdown-options" style="display: none;">
+                                    <div onclick="selecionarOpcao('Home office')">Home office</div>
+                                    <div onclick="selecionarOpcao('Treinamento')">Treinamento</div>
+                                    <div onclick="selecionarOpcao('Férias')">Férias</div>
+                                    <div onclick="selecionarOpcao('Folgas')">Folgas</div>
+                                </div>
                             </div>
-                            <div id="dropdown-options" class="dropdown-options" style="display: none;">
-                                <div onclick="selecionarOpcao('Home office')">Home office</div>
-                                <div onclick="selecionarOpcao('Treinamento')">Treinamento</div>
-                                <div onclick="selecionarOpcao('Férias')">Férias</div>
-                                <div onclick="selecionarOpcao('Folgas')">Folgas</div>
-                            </div>
+                            <input type="hidden" name="opcao" id="opcao-selecionada" required>
                         </div>
-                        <input type="hidden" name="opcao" id="opcao-selecionada" required>
-                    </div>
                     </div>
                 </div>
                 <div class="form-group message-area">
