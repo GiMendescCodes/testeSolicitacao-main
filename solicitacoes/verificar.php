@@ -48,23 +48,25 @@ $result = $conn->query($sql);
     <title>Painel de Solicitações</title>
     <style>
         .tudo {
-            margin-left: 150px;
             padding: 20px;
             width: 1200px;
-            /* largura fixa */
+            display: flex;
+            flex-direction: row;
         }
-                .fixo {
+
+        .fixo {
             position: fixed;
             left: 20px;
-            top: 20px;
+            top: 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .sidebar {
             width: 70px;
             background-color: #6c63ff;
-            height: 420px;
+            height: 480px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -80,25 +82,23 @@ $result = $conn->query($sql);
             position: relative;
             cursor: pointer;
             outline: none;
-
         }
 
         .menu-item .icon {
-            width: 100%;
-            height: 100%;
+            width: 50px;
+            height: 50px;
             display: block;
             mask-size: cover;
             -webkit-mask-size: cover;
             background-color: white;
         }
 
-        /* Exemplo de ícones usando mask (ou pode usar SVG inline) */
         .icon.home {
             mask: url('./img/home.png') no-repeat center;
         }
 
         .icon.people {
-            mask: url('./img/peoplee.png') no-repeat center;
+            mask: url('./img/people.png') no-repeat center;
         }
 
         .icon.docs {
@@ -106,7 +106,7 @@ $result = $conn->query($sql);
         }
 
         .icon.chapeu {
-            mask: url('./img/chapeuu.png') no-repeat center;
+            mask: url('./img/chapeu.png') no-repeat center;
         }
 
         .icon.grafico {
@@ -117,29 +117,28 @@ $result = $conn->query($sql);
             mask: url('./img/calendario.png') no-repeat center;
         }
 
-        .icon.mapa {
-            mask: url('./img/mapa.png') no-repeat center;
-        }
-
-        /* Estado ativo (com "bolinha") */
-
         .icon-circle {
             width: 55px;
             height: 60px;
             background-color: #4d47c3;
-            /* roxo escuro */
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 10px;
         }
-                .perfil {
+
+        .icon-circle img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .perfil {
             background-image: url(./img/bola.png);
             display: flex;
             align-items: center;
             border-radius: 40px;
-            margin-top: 50px;
+            margin-top: 20px;
             width: 65px;
             height: 68px;
             display: flex;
@@ -152,20 +151,6 @@ $result = $conn->query($sql);
             width: 35px;
             height: 28px;
             margin-left: 3px
-        }
-
-        .tudo {
-            margin-left: 150px;
-            padding: 20px;
-            width: 1200px;
-            /* largura fixa */
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 15px;
         }
 
         .logo {
@@ -184,44 +169,6 @@ $result = $conn->query($sql);
             width: 20px;
             height: 20px;
         }
-        .icon-circle img {
-            width: 30px;
-            height: 30px;
-        }
-
-        .tudo {
-            display: flex;
-            flex-direction: row;
-
-        }
-
-        .perfil-icon {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-        }
-
-
-        .perfil {
-            background-image: url(./img/bola.png);
-            display: flex;
-            align-items: center;
-            margin-left: 40px;
-            border-radius: 40px;
-            margin-top: 50px;
-            width: 65px;
-            height: 68px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .person {
-            background-image: url(./img/person.png);
-            width: 35px;
-            height: 28px;
-            margin-left: 3px
-        }
 
         * {
             margin: 0;
@@ -231,34 +178,30 @@ $result = $conn->query($sql);
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            height: 1000px;
+            /* altura fixa opcional */
             padding: 20px;
+            background-color: #EEEEFF;
         }
 
-
-        /* Carrossel de Cards */
         .carousel-section {
             margin-bottom: 40px;
-        }
-
-        .carousel-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 30px;
         }
 
         .carousel-wrapper {
             display: flex;
             transition: transform 0.5s ease;
-            gap: 30px;
+        }
+
+        .carousel-container {
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
         }
 
         .carousel-card {
-            min-width: 100%;
+            height: 255px;
             background: white;
             border-radius: 20px;
             padding: 40px;
@@ -266,12 +209,13 @@ $result = $conn->query($sql);
             display: flex;
             align-items: center;
             gap: 40px;
+            min-width: 100%; /* ocupa toda a largura da container */
+            flex-shrink: 0;
         }
 
         .card-illustration {
-            flex: 0 0 300px;
+            width: 300px;
             height: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 15px;
             display: flex;
             align-items: center;
@@ -282,25 +226,23 @@ $result = $conn->query($sql);
         }
 
         .card-content {
-            flex: 1;
+            width: 700px;
         }
 
         .card-title {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 20px;
             color: #667eea;
             margin-bottom: 8px;
         }
 
         .card-subtitle {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 15px;
             color: #333;
             margin-bottom: 20px;
         }
 
         .card-text {
-            font-size: 16px;
+            font-size: 13px;
             color: #666;
             line-height: 1.6;
             margin-bottom: 25px;
@@ -327,8 +269,7 @@ $result = $conn->query($sql);
 
         .carousel-nav {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 150px;
             background: white;
             border: none;
             width: 50px;
@@ -344,11 +285,6 @@ $result = $conn->query($sql);
             transition: all 0.3s ease;
         }
 
-        .carousel-nav:hover {
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-
         .carousel-nav.prev {
             left: 20px;
         }
@@ -357,21 +293,8 @@ $result = $conn->query($sql);
             right: 20px;
         }
 
-        /* Painel de Solicitações */
         .main-panel {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .panel-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 40px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            width: 1140px;
         }
 
         .panel-icon {
@@ -385,50 +308,7 @@ $result = $conn->query($sql);
             font-size: 24px;
         }
 
-        .panel-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
 
-        .panel-subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 80px;
-            height: 100vh;
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 0;
-            gap: 30px;
-            z-index: 1000;
-        }
-
-        .sidebar-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-icon:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
 
         .content-area {
             margin-left: 100px;
@@ -447,7 +327,7 @@ $result = $conn->query($sql);
             padding: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            min-width: 200px;
+            width: 200px;
         }
 
         .status-number {
@@ -462,7 +342,6 @@ $result = $conn->query($sql);
             color: #666;
         }
 
-        /* Cards de Solicitação */
         .solicitation-card {
             background: linear-gradient(135deg, #f8f9ff 0%, #e6f0ff 100%);
             border: 2px solid #667eea;
@@ -491,32 +370,28 @@ $result = $conn->query($sql);
             font-weight: 600;
         }
 
-        .employee-info {
-            flex: 1;
-        }
-
         .employee-name {
             font-size: 18px;
             font-weight: 600;
             color: #333;
         }
 
-        .request-type {
-            background: #667eea;
-            color: white;
+        .request-type,
+        .request-date {
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
         }
 
+        .request-type {
+            background: #667eea;
+            color: white;
+        }
+
         .request-date {
             background: #e6f0ff;
             color: #667eea;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
         }
 
         .card-content-text {
@@ -550,19 +425,9 @@ $result = $conn->query($sql);
             color: white;
         }
 
-        .btn-approve:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
-        }
-
         .btn-deny {
             background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
             color: white;
-        }
-
-        .btn-deny:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(244, 67, 54, 0.3);
         }
 
         .no-requests {
@@ -571,28 +436,8 @@ $result = $conn->query($sql);
             color: #666;
             font-size: 18px;
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .content-area {
-                margin-left: 0;
-            }
-
-            .carousel-card {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .card-illustration {
-                flex: none;
-                width: 100%;
-                max-width: 300px;
-            }
-        }
     </style>
+
 </head>
 
 <body>
@@ -604,7 +449,7 @@ $result = $conn->query($sql);
             <a href="" class="menu-item"><span class="icon docs"></span></a>
             <a href="" class="Home icon"><span class="icon heat"></span></a>
             <a href="" class="menu-item"><span class="icon grafico"></span></a>
-            <div class="icon-circle"><span class="img/calendario.png"></span></div>
+            <div class="icon-circle"> <img src="img/calendario.png"></div>
         </div>
         <div class="perfil">
             <a class="person" href=""></a>
@@ -614,135 +459,134 @@ $result = $conn->query($sql);
     <div class="tudo">
         <div class="content-area">
             <div class="container">
-                <!-- Carrossel de Cards -->
-                <div class="carousel-section">
-                    <div class="carousel-container">
-                        <div class="carousel-wrapper" id="carousel">
-                            <!-- Card 1 -->
-                            <div class="carousel-card">
-                                <div class="card-illustration">
-                                    [Espaço para Imagem 1]
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">Comunicado Importante!</div>
-                                    <div class="card-subtitle">Atualização sobre o novo modelo de férias.</div>
-                                    <div class="card-text">
-                                        Atenção! As regras para solicitação de férias foram atualizadas. A partir deste
-                                        mês, todos os pedidos devem ser realizados com, no mínimo, 30 dias de
-                                        antecedência. Além disso, está disponível a opção de divisão das férias em até
-                                        três períodos, sendo que nenhum deles pode ser inferior a 5 dias. Para mais
-                                        informações, consulte o manual do colaborador ou entre em contato com o setor de
-                                        RH.
+                <div class="parte1">
+                    <div class="carousel-section">
+                        <div class="carousel-container">
+                            <div class="carousel-wrapper" id="carousel">
+                                <!-- Card 1 -->
+                                <div class="carousel-card">
+                                    <div class="card-illustration">
+                                        <img src="img/card1.png" alt="">
                                     </div>
-                                    <div class="card-dots">
-                                        <div class="dot active"></div>
-                                        <div class="dot"></div>
-                                        <div class="dot"></div>
-                                        <div class="dot"></div>
+                                    <div class="card-content">
+                                        <div class="card-title">Comunicado Importante!</div>
+                                        <div class="card-subtitle">Atualização sobre o novo modelo de férias.</div>
+                                        <div class="card-text">
+                                            Atenção! As regras para solicitação de férias foram atualizadas. A partir
+                                            deste
+                                            mês, todos os pedidos devem ser realizados com, no mínimo, 30 dias de
+                                            antecedência. Além disso, está disponível a opção de divisão das férias em
+                                            até
+                                            três períodos, sendo que nenhum deles pode ser inferior a 5 dias. Para mais
+                                            informações, consulte o manual do colaborador ou entre em contato com o
+                                            setor de
+                                            RH.
+                                        </div>
+                                        <div class="card-dots">
+                                            <div class="dot active"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Card 2 -->
-                            <div class="carousel-card">
-                                <div class="card-illustration">
-                                    [Espaço para Imagem 2]
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">Aniversariantes do Mês</div>
-                                    <div class="card-subtitle">Comemoração dos Aniversariantes de Junho</div>
-                                    <div class="card-text">
-                                        Neste mês, celebramos o aniversário de nossos colaboradores: João Silva (05/06),
-                                        Ana Costa (12/06) e Marcos Pereira (25/06). Desejamos a todos muitas
-                                        felicidades, sucesso e realizações! Que este novo ciclo seja repleto de
-                                        conquistas e momentos especiais. Parabéns a todos!
+                                <!-- Card 2 -->
+                                <div class="carousel-card">
+                                    <div class="card-illustration">
+                                        <img src="img/card2.png" alt="">
                                     </div>
-                                    <div class="card-dots">
-                                        <div class="dot"></div>
-                                        <div class="dot active"></div>
-                                        <div class="dot"></div>
-                                        <div class="dot"></div>
+                                    <div class="card-content">
+                                        <div class="card-title">Aniversariantes do Mês</div>
+                                        <div class="card-subtitle">Comemoração dos Aniversariantes de Junho</div>
+                                        <div class="card-text">
+                                            Neste mês, celebramos o aniversário de nossos colaboradores: João Silva
+                                            (05/06),
+                                            Ana Costa (12/06) e Marcos Pereira (25/06). Desejamos a todos muitas
+                                            felicidades, sucesso e realizações! Que este novo ciclo seja repleto de
+                                            conquistas e momentos especiais. Parabéns a todos!
+                                        </div>
+                                        <div class="card-dots">
+                                            <div class="dot"></div>
+                                            <div class="dot active"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Card 3 -->
-                            <div class="carousel-card">
-                                <div class="card-illustration">
-                                    [Espaço para Imagem 3]
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">Meta do Mês</div>
-                                    <div class="card-subtitle">Meta de Aprovação de Solicitações</div>
-                                    <div class="card-text">
-                                        Nosso objetivo para este mês é alcançar 95% de aprovações de solicitações dentro
-                                        do prazo estabelecido. Para isso, reforçamos a importância de revisar os pedidos
-                                        com agilidade e precisão, garantindo que nossa análise seja feita dentro do
-                                        prazo de até 48 horas após o recebimento. Contamos com o apoio e a dedicação de
-                                        toda a equipe para atingir essa meta e melhorar ainda mais nossos processos
-                                        internos!
+                                <!-- Card 3 -->
+                                <div class="carousel-card">
+                                    <div class="card-illustration">
+                                        <img src="img/card3.png" alt="">
                                     </div>
-                                    <div class="card-dots">
-                                        <div class="dot"></div>
-                                        <div class="dot"></div>
-                                        <div class="dot active"></div>
-                                        <div class="dot"></div>
+                                    <div class="card-content">
+                                        <div class="card-title">Meta do Mês</div>
+                                        <div class="card-subtitle">Meta de Aprovação de Solicitações</div>
+                                        <div class="card-text">
+                                            Nosso objetivo para este mês é alcançar 95% de aprovações de solicitações
+                                            dentro
+                                            do prazo estabelecido. Para isso, reforçamos a importância de revisar os
+                                            pedidos
+                                            com agilidade e precisão, garantindo que nossa análise seja feita dentro do
+                                            prazo de até 48 horas após o recebimento. Contamos com o apoio e a dedicação
+                                            de
+                                            toda a equipe para atingir essa meta e melhorar ainda mais nossos processos
+                                            internos!
+                                        </div>
+                                        <div class="card-dots">
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot active"></div>
+                                            <div class="dot"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Card 4 -->
-                            <div class="carousel-card">
-                                <div class="card-illustration">
-                                    [Espaço para Imagem 4]
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">Treinamento Programado</div>
-                                    <div class="card-subtitle">Workshop de Desenvolvimento Profissional</div>
-                                    <div class="card-text">
-                                        Participe do nosso Workshop de Desenvolvimento Profissional, que acontecerá no
-                                        dia 20 de maio, das 14h às 17h, na sala de conferências. Os temas abordados
-                                        serão: liderança, gestão de tempo, comunicação eficaz e planejamento
-                                        estratégico. As inscrições podem ser realizadas diretamente no portal interno
-                                        até o dia 18 de maio. Não perca essa oportunidade de aprimorar suas habilidades
-                                        e expandir seus conhecimentos!
+                                <!-- Card 4 -->
+                                <div class="carousel-card">
+                                    <div class="card-illustration">
+                                        <img src="img/card4.png" alt="">
                                     </div>
-                                    <div class="card-dots">
-                                        <div class="dot"></div>
-                                        <div class="dot"></div>
-                                        <div class="dot"></div>
-                                        <div class="dot active"></div>
+                                    <div class="card-content">
+                                        <div class="card-title">Treinamento Programado</div>
+                                        <div class="card-subtitle">Workshop de Desenvolvimento Profissional</div>
+                                        <div class="card-text">
+                                            Participe do nosso Workshop de Desenvolvimento Profissional, que acontecerá
+                                            no
+                                            dia 20 de maio, das 14h às 17h, na sala de conferências. Os temas abordados
+                                            serão: liderança, gestão de tempo, comunicação eficaz e planejamento
+                                            estratégico. As inscrições podem ser realizadas diretamente no portal
+                                            interno
+                                            até o dia 18 de maio. Não perca essa oportunidade de aprimorar suas
+                                            habilidades
+                                            e expandir seus conhecimentos!
+                                        </div>
+                                        <div class="card-dots">
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot active"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <button class="carousel-nav prev" onclick="previousSlide()">‹</button>
-                        <button class="carousel-nav next" onclick="nextSlide()">›</button>
+                    </div>
+                    <?php
+                    $countSql = "SELECT COUNT(*) as total FROM dados WHERE status = 'pendente'";
+                    $countResult = $conn->query($countSql);
+                    $pendingCount = $countResult ? $countResult->fetch_assoc()['total'] : 0;
+                    ?>
+                    <div class="status-summary">
+                        <div class="status-number"><?php echo $pendingCount; ?></div>
+                        <div class="status-label">solicitações<br>pendentes de<br>análise</div>
+                        <img src="img/numero.png" alt="">
                     </div>
                 </div>
 
                 <!-- Painel Principal -->
                 <div class="main-panel">
-                    <div class="panel-header">
-                        <div class="panel-icon">📋</div>
-                        <div>
-                            <div class="panel-title">Painel de solicitações</div>
-                            <div class="panel-subtitle">Analise as solicitações feitas pelos funcionários</div>
-                        </div>
-
-                        <?php
-                        $countSql = "SELECT COUNT(*) as total FROM dados WHERE status = 'pendente'";
-                        $countResult = $conn->query($countSql);
-                        $pendingCount = $countResult ? $countResult->fetch_assoc()['total'] : 0;
-                        ?>
-
-                        <div class="status-summary">
-                            <div class="status-number"><?php echo $pendingCount; ?></div>
-                            <div class="status-label">solicitações<br>pendentes de<br>análise</div>
-                            <div style="margin-top: 15px;">📊📈🔍</div>
-                        </div>
-                    </div>
 
                     <div class="panel-content">
                         <?php
@@ -793,39 +637,43 @@ $result = $conn->query($sql);
     </div>
 
     <script>
-        let currentSlide = 0;
-        const totalSlides = 4;
+      let currentSlide = 0;
+const totalSlides = 4;
 
-        function updateCarousel() {
-            const carousel = document.getElementById('carousel');
-            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+function updateCarousel() {
+    const slideWidth = 1200; // largura fixa
+    const carousel = document.getElementById('carousel');
+    
+    const offset = currentSlide * slideWidth;
+    carousel.style.transform = `translateX(-${offset}px)`;
 
-            // Update dots
-            document.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
-            });
-        }
+    document.querySelectorAll('.dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+    });
+}
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateCarousel();
-        }
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+}
 
-        function previousSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateCarousel();
-        }
+function previousSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+}
 
-        // Auto-advance carousel every 5 seconds
-        setInterval(nextSlide, 5000);
+// Auto-advance
+setInterval(nextSlide, 5000);
 
-        // Make dots clickable
-        document.querySelectorAll('.dot').forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                currentSlide = index;
-                updateCarousel();
-            });
-        });
+// Make dots clickable
+document.querySelectorAll('.dot').forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+        currentSlide = index;
+        updateCarousel();
+    });
+});
+
+
 
         function processarAcao(acao, id, cardId) {
             if (!confirm('Tem certeza que deseja ' + acao + ' esta solicitação?')) return;
