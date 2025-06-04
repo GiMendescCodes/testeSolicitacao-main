@@ -41,11 +41,188 @@ $result = $conn->query($sql);
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Solicitações</title>
     <style>
+        .tudo {
+            margin-left: 150px;
+            padding: 20px;
+            width: 1200px;
+            /* largura fixa */
+        }
+                .fixo {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar {
+            width: 70px;
+            background-color: #6c63ff;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 40px;
+        }
+
+        .menu-item {
+            width: 50px;
+            height: 50px;
+            margin: 25px 0;
+            background: none;
+            border: none;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+
+        }
+
+        .menu-item .icon {
+            width: 100%;
+            height: 100%;
+            display: block;
+            mask-size: cover;
+            -webkit-mask-size: cover;
+            background-color: white;
+        }
+
+        /* Exemplo de ícones usando mask (ou pode usar SVG inline) */
+        .icon.home {
+            mask: url('./img/home.png') no-repeat center;
+        }
+
+        .icon.people {
+            mask: url('./img/peoplee.png') no-repeat center;
+        }
+
+        .icon.docs {
+            mask: url('./img/docs.png') no-repeat center;
+        }
+
+        .icon.chapeu {
+            mask: url('./img/chapeuu.png') no-repeat center;
+        }
+
+        .icon.grafico {
+            mask: url('./img/grafico.png') no-repeat center;
+        }
+
+        .icon.calendario {
+            mask: url('./img/calendario.png') no-repeat center;
+        }
+
+        .icon.mapa {
+            mask: url('./img/mapa.png') no-repeat center;
+        }
+
+        /* Estado ativo (com "bolinha") */
+
+        .icon-circle {
+            width: 55px;
+            height: 60px;
+            background-color: #4d47c3;
+            /* roxo escuro */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+                .perfil {
+            background-image: url(./img/bola.png);
+            display: flex;
+            align-items: center;
+            border-radius: 40px;
+            margin-top: 50px;
+            width: 65px;
+            height: 68px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .person {
+            background-image: url(./img/person.png);
+            width: 35px;
+            height: 28px;
+            margin-left: 3px
+        }
+
+        .tudo {
+            margin-left: 150px;
+            padding: 20px;
+            width: 1200px;
+            /* largura fixa */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo img {
+            width: 20px;
+            height: 20px;
+        }
+        .icon-circle img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .tudo {
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        .perfil-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+
+        .perfil {
+            background-image: url(./img/bola.png);
+            display: flex;
+            align-items: center;
+            margin-left: 40px;
+            border-radius: 40px;
+            margin-top: 50px;
+            width: 65px;
+            height: 68px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .person {
+            background-image: url(./img/person.png);
+            width: 35px;
+            height: 28px;
+            margin-left: 3px
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -59,10 +236,6 @@ $result = $conn->query($sql);
             padding: 20px;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
 
         /* Carrossel de Cards */
         .carousel-section {
@@ -403,16 +576,16 @@ $result = $conn->query($sql);
             .sidebar {
                 display: none;
             }
-            
+
             .content-area {
                 margin-left: 0;
             }
-            
+
             .carousel-card {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .card-illustration {
                 flex: none;
                 width: 100%;
@@ -421,175 +594,199 @@ $result = $conn->query($sql);
         }
     </style>
 </head>
+
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-icon">🏠</div>
-        <div class="sidebar-icon">👥</div>
-        <div class="sidebar-icon">♿</div>
-        <div class="sidebar-icon">🎓</div>
-        <div class="sidebar-icon">📊</div>
-        <div class="sidebar-icon">📁</div>
-        <div class="sidebar-icon">📚</div>
-        <div class="sidebar-icon">👤</div>
+    <div class="fixo">
+        <img class="logo" src="./img/augebit.png" alt="">
+        <div class="sidebar">
+            <a href="" class="menu-item"><span class="icon home"></span></a>
+            <a href="" class="menu-item"><span class="icon people"></span></a>
+            <a href="" class="menu-item"><span class="icon docs"></span></a>
+            <a href="" class="Home icon"><span class="icon heat"></span></a>
+            <a href="" class="menu-item"><span class="icon grafico"></span></a>
+            <div class="icon-circle"><span class="img/calendario.png"></span></div>
+        </div>
+        <div class="perfil">
+            <a class="person" href=""></a>
+        </div>
     </div>
-
-    <div class="content-area">
-        <div class="container">
-            <!-- Carrossel de Cards -->
-            <div class="carousel-section">
-                <div class="carousel-container">
-                    <div class="carousel-wrapper" id="carousel">
-                        <!-- Card 1 -->
-                        <div class="carousel-card">
-                            <div class="card-illustration">
-                                [Espaço para Imagem 1]
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">Comunicado Importante!</div>
-                                <div class="card-subtitle">Atualização sobre o novo modelo de férias.</div>
-                                <div class="card-text">
-                                    Atenção! As regras para solicitação de férias foram atualizadas. A partir deste mês, todos os pedidos devem ser realizados com, no mínimo, 30 dias de antecedência. Além disso, está disponível a opção de divisão das férias em até três períodos, sendo que nenhum deles pode ser inferior a 5 dias. Para mais informações, consulte o manual do colaborador ou entre em contato com o setor de RH.
+    </div>
+    <div class="tudo">
+        <div class="content-area">
+            <div class="container">
+                <!-- Carrossel de Cards -->
+                <div class="carousel-section">
+                    <div class="carousel-container">
+                        <div class="carousel-wrapper" id="carousel">
+                            <!-- Card 1 -->
+                            <div class="carousel-card">
+                                <div class="card-illustration">
+                                    [Espaço para Imagem 1]
                                 </div>
-                                <div class="card-dots">
-                                    <div class="dot active"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
+                                <div class="card-content">
+                                    <div class="card-title">Comunicado Importante!</div>
+                                    <div class="card-subtitle">Atualização sobre o novo modelo de férias.</div>
+                                    <div class="card-text">
+                                        Atenção! As regras para solicitação de férias foram atualizadas. A partir deste
+                                        mês, todos os pedidos devem ser realizados com, no mínimo, 30 dias de
+                                        antecedência. Além disso, está disponível a opção de divisão das férias em até
+                                        três períodos, sendo que nenhum deles pode ser inferior a 5 dias. Para mais
+                                        informações, consulte o manual do colaborador ou entre em contato com o setor de
+                                        RH.
+                                    </div>
+                                    <div class="card-dots">
+                                        <div class="dot active"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="carousel-card">
+                                <div class="card-illustration">
+                                    [Espaço para Imagem 2]
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-title">Aniversariantes do Mês</div>
+                                    <div class="card-subtitle">Comemoração dos Aniversariantes de Junho</div>
+                                    <div class="card-text">
+                                        Neste mês, celebramos o aniversário de nossos colaboradores: João Silva (05/06),
+                                        Ana Costa (12/06) e Marcos Pereira (25/06). Desejamos a todos muitas
+                                        felicidades, sucesso e realizações! Que este novo ciclo seja repleto de
+                                        conquistas e momentos especiais. Parabéns a todos!
+                                    </div>
+                                    <div class="card-dots">
+                                        <div class="dot"></div>
+                                        <div class="dot active"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="carousel-card">
+                                <div class="card-illustration">
+                                    [Espaço para Imagem 3]
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-title">Meta do Mês</div>
+                                    <div class="card-subtitle">Meta de Aprovação de Solicitações</div>
+                                    <div class="card-text">
+                                        Nosso objetivo para este mês é alcançar 95% de aprovações de solicitações dentro
+                                        do prazo estabelecido. Para isso, reforçamos a importância de revisar os pedidos
+                                        com agilidade e precisão, garantindo que nossa análise seja feita dentro do
+                                        prazo de até 48 horas após o recebimento. Contamos com o apoio e a dedicação de
+                                        toda a equipe para atingir essa meta e melhorar ainda mais nossos processos
+                                        internos!
+                                    </div>
+                                    <div class="card-dots">
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot active"></div>
+                                        <div class="dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="carousel-card">
+                                <div class="card-illustration">
+                                    [Espaço para Imagem 4]
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-title">Treinamento Programado</div>
+                                    <div class="card-subtitle">Workshop de Desenvolvimento Profissional</div>
+                                    <div class="card-text">
+                                        Participe do nosso Workshop de Desenvolvimento Profissional, que acontecerá no
+                                        dia 20 de maio, das 14h às 17h, na sala de conferências. Os temas abordados
+                                        serão: liderança, gestão de tempo, comunicação eficaz e planejamento
+                                        estratégico. As inscrições podem ser realizadas diretamente no portal interno
+                                        até o dia 18 de maio. Não perca essa oportunidade de aprimorar suas habilidades
+                                        e expandir seus conhecimentos!
+                                    </div>
+                                    <div class="card-dots">
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot active"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card 2 -->
-                        <div class="carousel-card">
-                            <div class="card-illustration">
-                                [Espaço para Imagem 2]
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">Aniversariantes do Mês</div>
-                                <div class="card-subtitle">Comemoração dos Aniversariantes de Junho</div>
-                                <div class="card-text">
-                                    Neste mês, celebramos o aniversário de nossos colaboradores: João Silva (05/06), Ana Costa (12/06) e Marcos Pereira (25/06). Desejamos a todos muitas felicidades, sucesso e realizações! Que este novo ciclo seja repleto de conquistas e momentos especiais. Parabéns a todos!
-                                </div>
-                                <div class="card-dots">
-                                    <div class="dot"></div>
-                                    <div class="dot active"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="carousel-card">
-                            <div class="card-illustration">
-                                [Espaço para Imagem 3]
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">Meta do Mês</div>
-                                <div class="card-subtitle">Meta de Aprovação de Solicitações</div>
-                                <div class="card-text">
-                                    Nosso objetivo para este mês é alcançar 95% de aprovações de solicitações dentro do prazo estabelecido. Para isso, reforçamos a importância de revisar os pedidos com agilidade e precisão, garantindo que nossa análise seja feita dentro do prazo de até 48 horas após o recebimento. Contamos com o apoio e a dedicação de toda a equipe para atingir essa meta e melhorar ainda mais nossos processos internos!
-                                </div>
-                                <div class="card-dots">
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot active"></div>
-                                    <div class="dot"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4 -->
-                        <div class="carousel-card">
-                            <div class="card-illustration">
-                                [Espaço para Imagem 4]
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">Treinamento Programado</div>
-                                <div class="card-subtitle">Workshop de Desenvolvimento Profissional</div>
-                                <div class="card-text">
-                                    Participe do nosso Workshop de Desenvolvimento Profissional, que acontecerá no dia 20 de maio, das 14h às 17h, na sala de conferências. Os temas abordados serão: liderança, gestão de tempo, comunicação eficaz e planejamento estratégico. As inscrições podem ser realizadas diretamente no portal interno até o dia 18 de maio. Não perca essa oportunidade de aprimorar suas habilidades e expandir seus conhecimentos!
-                                </div>
-                                <div class="card-dots">
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot"></div>
-                                    <div class="dot active"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="carousel-nav prev" onclick="previousSlide()">‹</button>
-                    <button class="carousel-nav next" onclick="nextSlide()">›</button>
-                </div>
-            </div>
-
-            <!-- Painel Principal -->
-            <div class="main-panel">
-                <div class="panel-header">
-                    <div class="panel-icon">📋</div>
-                    <div>
-                        <div class="panel-title">Painel de solicitações</div>
-                        <div class="panel-subtitle">Analise as solicitações feitas pelos funcionários</div>
-                    </div>
-                    
-                    <?php
-                    $countSql = "SELECT COUNT(*) as total FROM dados WHERE status = 'pendente'";
-                    $countResult = $conn->query($countSql);
-                    $pendingCount = $countResult ? $countResult->fetch_assoc()['total'] : 0;
-                    ?>
-                    
-                    <div class="status-summary">
-                        <div class="status-number"><?php echo $pendingCount; ?></div>
-                        <div class="status-label">solicitações<br>pendentes de<br>análise</div>
-                        <div style="margin-top: 15px;">📊📈🔍</div>
+                        <button class="carousel-nav prev" onclick="previousSlide()">‹</button>
+                        <button class="carousel-nav next" onclick="nextSlide()">›</button>
                     </div>
                 </div>
 
-                <div class="panel-content">
-                    <?php
-                    if ($result && $result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
-                            $cardId = "card_" . $row['id'];
-                            $initials = strtoupper(substr($row['opcao'] ?? 'NS', 0, 2));
-                            
-                            echo "<div class='solicitation-card' id='$cardId'>";
-                            echo "<div class='card-header'>";
-                            echo "<div class='employee-avatar'>$initials</div>";
-                            echo "<div class='employee-info'>";
-                            echo "<div class='employee-name'>Nome Sobrenome</div>";
-                            echo "</div>";
-                            echo "<div class='request-type'>" . htmlspecialchars($row['opcao'] ?? '') . "</div>";
-                            echo "<div class='request-date'>" . htmlspecialchars($row['data_escolhida'] ?? '') . "</div>";
-                            echo "</div>";
-                            
-                            echo "<div class='card-content-text'>";
-                            echo htmlspecialchars($row['mensagem'] ?? 'Lorem ipsum dolor sit amet consectetur. Proin consequat elit enim vitae. Ut mauris auctor mauris posuere amet morbi tempus volutpat. Nullam rhoncus ornare id nisl. A facilisis arcu eget augue. Lorem ipsum dolor sit amet consectetur. Proin consequat elit enim vitae. Ut mauris auctor mauris posuere amet morbi tempus volutpat. Nullam rhoncus ornare id nisl. A facilisis arcu eget augue Lorem ipsum dolor sit amet consectetur. Proin consequat elit enim vitae. Ut mauris auctor mauris posuere amet morbi tempus volutpat.');
-                            echo "</div>";
-                            
-                            if ($row['status'] === 'pendente') {
-                                echo "<div class='card-actions'>";
-                                echo "<button class='btn btn-approve' onclick=\"processarAcao('aceitar', " . $row['id'] . ", '$cardId')\">Aprovar solicitação</button>";
-                                echo "<button class='btn btn-deny' onclick=\"processarAcao('negar', " . $row['id'] . ", '$cardId')\">Negar solicitação</button>";
+                <!-- Painel Principal -->
+                <div class="main-panel">
+                    <div class="panel-header">
+                        <div class="panel-icon">📋</div>
+                        <div>
+                            <div class="panel-title">Painel de solicitações</div>
+                            <div class="panel-subtitle">Analise as solicitações feitas pelos funcionários</div>
+                        </div>
+
+                        <?php
+                        $countSql = "SELECT COUNT(*) as total FROM dados WHERE status = 'pendente'";
+                        $countResult = $conn->query($countSql);
+                        $pendingCount = $countResult ? $countResult->fetch_assoc()['total'] : 0;
+                        ?>
+
+                        <div class="status-summary">
+                            <div class="status-number"><?php echo $pendingCount; ?></div>
+                            <div class="status-label">solicitações<br>pendentes de<br>análise</div>
+                            <div style="margin-top: 15px;">📊📈🔍</div>
+                        </div>
+                    </div>
+
+                    <div class="panel-content">
+                        <?php
+                        if ($result && $result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $cardId = "card_" . $row['id'];
+                                $initials = strtoupper(substr($row['opcao'] ?? 'NS', 0, 2));
+
+                                echo "<div class='solicitation-card' id='$cardId'>";
+                                echo "<div class='card-header'>";
+                                echo "<div class='employee-avatar'>$initials</div>";
+                                echo "<div class='employee-info'>";
+                                echo "<div class='employee-name'>Nome Sobrenome</div>";
                                 echo "</div>";
-                            } else {
-                                echo "<div class='card-actions'>";
-                                echo "<div style='padding: 10px 20px; background: " . ($row['status'] === 'aceito' ? '#4CAF50' : '#f44336') . "; color: white; border-radius: 20px; font-weight: 600;'>";
-                                echo "Status: " . ucfirst($row['status']);
+                                echo "<div class='request-type'>" . htmlspecialchars($row['opcao'] ?? '') . "</div>";
+                                echo "<div class='request-date'>" . htmlspecialchars($row['data_escolhida'] ?? '') . "</div>";
                                 echo "</div>";
+
+                                echo "<div class='card-content-text'>";
+                                echo htmlspecialchars($row['mensagem'] ?? 'Lorem ipsum dolor sit amet consectetur. Proin consequat elit enim vitae. Ut mauris auctor mauris posuere amet morbi tempus volutpat. Nullam rhoncus ornare id nisl. A facilisis arcu eget augue. Lorem ipsum dolor sit amet consectetur. Proin consequat elit enim vitae. Ut mauris auctor mauris posuere amet morbi tempus volutpat. Nullam rhoncus ornare id nisl. A facilisis arcu eget augue Lorem ipsum dolor sit amet consectetur. Proin consequat elit enim vitae. Ut mauris auctor mauris posuere amet morbi tempus volutpat.');
+                                echo "</div>";
+
+                                if ($row['status'] === 'pendente') {
+                                    echo "<div class='card-actions'>";
+                                    echo "<button class='btn btn-approve' onclick=\"processarAcao('aceitar', " . $row['id'] . ", '$cardId')\">Aprovar solicitação</button>";
+                                    echo "<button class='btn btn-deny' onclick=\"processarAcao('negar', " . $row['id'] . ", '$cardId')\">Negar solicitação</button>";
+                                    echo "</div>";
+                                } else {
+                                    echo "<div class='card-actions'>";
+                                    echo "<div style='padding: 10px 20px; background: " . ($row['status'] === 'aceito' ? '#4CAF50' : '#f44336') . "; color: white; border-radius: 20px; font-weight: 600;'>";
+                                    echo "Status: " . ucfirst($row['status']);
+                                    echo "</div>";
+                                    echo "</div>";
+                                }
+
                                 echo "</div>";
                             }
-                            
+                        } else {
+                            echo "<div class='no-requests'>";
+                            echo "<p>📭 Nenhuma solicitação para verificar.</p>";
                             echo "</div>";
                         }
-                    } else {
-                        echo "<div class='no-requests'>";
-                        echo "<p>📭 Nenhuma solicitação para verificar.</p>";
-                        echo "</div>";
-                    }
-                    ?>
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -602,7 +799,7 @@ $result = $conn->query($sql);
         function updateCarousel() {
             const carousel = document.getElementById('carousel');
             carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-            
+
             // Update dots
             document.querySelectorAll('.dot').forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
@@ -648,6 +845,7 @@ $result = $conn->query($sql);
         }
     </script>
 </body>
+
 </html>
 
 <?php $conn->close(); ?>

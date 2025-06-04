@@ -52,6 +52,22 @@ if ($proxFerias) {
 
 
     <style>
+/* Esconde o ícone nativo de data */
+
+/* Chrome, Edge, Safari */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type="date"]::-moz-calendar-picker-indicator {
+    display: none;
+}
+
+
+
         * {
             margin: 0;
             padding: 0;
@@ -755,18 +771,24 @@ if ($proxFerias) {
         <div class="form-section">
             <form id="solicitacaoForm">
                 <div class="form-row">
-                    <div class="form-group">
-                        <label> <img src="img/calendarioRoxo.png" alt="">Data que você deseja marcar a
-                            solicitação</label>
-                        <input type="date" name="data" class="form-input" required>
+                    <div class="form-group" style="position: relative;">
+                        <input type="date" id="data" name="data" class="form-input" required
+                            placeholder="Data que você deseja marcar a solicitação" style="padding-right: 40px;">
+
+                        <img src="img/calendarioRoxo.png" alt="Abrir calendário"
+                            style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); width: 20px; height: 20px; cursor: pointer;"
+                            onclick="document.getElementById('data').showPicker()">
                     </div>
+
+
+
+
                     <div class="form-group">
                         <div class="opcao">
-                            <label> <img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
-                                solicitação</label>
                             <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
                                 <div class="dropdown-btn" id="selected-option">
-                                    <span>Escolha uma opção</span>
+                                    <span><img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
+                                        solicitação</span>
                                     <span>▼</span>
                                 </div>
                                 <div id="dropdown-options" class="dropdown-options" style="display: none;">
@@ -781,10 +803,14 @@ if ($proxFerias) {
                     </div>
                 </div>
                 <div class="form-group message-area">
-                    <label><img src="img/texto.png" alt=""> Explique sua solicitação</label>
-                    <textarea name="mensagem" class="form-input message-input" required autocomplete="off"
-                        placeholder="Descreva detalhes da sua solicitação..."></textarea>
+                    <div id="mensagem" contenteditable="true" class="form-input message-input">
+                        <img src="img/texto.png" alt="" style="width: 20px; vertical-align: middle;"> Explique sua
+                        solicitação
+                    </div>
+
+                    <input type="hidden" name="mensagem">
                 </div>
+
                 <button type="submit" class="submit-btn">ENVIAR</button>
             </form>
         </div>
@@ -901,6 +927,14 @@ if ($proxFerias) {
                 // Inicializa o título
                 updateTitle();
             }
+        });
+        const form = document.querySelector('form');
+        const editableDiv = document.querySelector('#mensagem');
+        const hiddenInput = document.querySelector('input[name="mensagem"]');
+
+        form.addEventListener('submit', function (e) {
+            hiddenInput.value = editableDiv.innerHTML;
+            // ou use innerText se quiser só texto puro
         });
 
     </script>
