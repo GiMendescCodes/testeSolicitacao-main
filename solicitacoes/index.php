@@ -52,21 +52,16 @@ if ($proxFerias) {
 
 
     <style>
-/* Esconde o ícone nativo de data */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            -webkit-appearance: none;
+            display: none;
+        }
 
-/* Chrome, Edge, Safari */
-input[type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 0;
-    display: none;
-    -webkit-appearance: none;
-}
-
-/* Firefox */
-input[type="date"]::-moz-calendar-picker-indicator {
-    display: none;
-}
-
-
+        /* Firefox */
+        input[type="date"]::-moz-calendar-picker-indicator {
+            display: none;
+        }
 
         * {
             margin: 0;
@@ -197,7 +192,7 @@ input[type="date"]::-moz-calendar-picker-indicator {
             display: flex;
             align-items: baseline;
             gap: 8px;
-            margin-left: -150px;
+            margin-left: -180px;
             margin-top: -150px;
             display: flex;
             flex-direction: column;
@@ -211,6 +206,7 @@ input[type="date"]::-moz-calendar-picker-indicator {
             align-items: flex-end;
             align-content: end;
             text-align: end;
+            margin-bottom: -5px;
         }
 
         .count-text {
@@ -342,6 +338,10 @@ input[type="date"]::-moz-calendar-picker-indicator {
 
         .form-input {
             width: 384px;
+        }
+
+        .form-input img {
+            margin: 5px;
         }
 
         /* Ajuste: message-area ocupa largura total */
@@ -555,6 +555,10 @@ input[type="date"]::-moz-calendar-picker-indicator {
             margin-left: -50px;
         }
 
+        thead[role="presentation"] {
+            background: none;
+        }
+
         .calendar-table {
             transform: scale(0.9);
             transform-origin: top center;
@@ -604,40 +608,38 @@ input[type="date"]::-moz-calendar-picker-indicator {
         }
 
         #calendar {
-            background-color: #F3F4FF;
+            background-color: #D2D2FF;
+            height: 360px;
             border-radius: 24px;
             padding: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             width: 400px;
-            max-height: 150px;
             overflow: visible;
             margin-left: -10px;
         }
 
         .fc-daygrid-day {
-            background-color: #7C71F8;
-            border: 1px solid #7C71F8;
-            border-radius: 6px;
+            background-color: #D2D2FF;
+            border: 1px solid black;
             padding: 4px !important;
             min-width: 28px !important;
             min-height: 28px !important;
         }
 
         .fc-daygrid-day-number {
-            color: #FFFFFF;
+            color: black;
             font-weight: 500;
             font-size: 11px;
         }
 
         .fc-day-today {
-            background-color: #26C6DA !important;
-            border-radius: 6px;
+            background-color: #1EC1BA !important;
             color: #FFFFFF !important;
         }
 
         .fc-event {
-            background-color: #4A3FDB !important;
-            color: #FFFFFF !important;
+            background-color: #6E6DFF !important;
+            color: black !important;
             border-radius: 4px;
             padding: 2px 4px;
             font-size: 9px;
@@ -645,8 +647,25 @@ input[type="date"]::-moz-calendar-picker-indicator {
         }
 
         .fc-day-other {
-            background-color: #E0DFFF;
+            background-color: #4746D8;
             color: #7C71F8;
+        }
+
+        /* Cabeçalho com os nomes dos dias */
+        .fc-col-header-cell {
+            background-color: #D2D2FF !important;
+            color: black !important;
+            font-weight: 600 !important;
+            font-size: 12px !important;
+            text-align: center !important;
+            padding: 8px 0 !important;
+            border: none !important;
+        }
+
+        .fc-view-harness {
+            height: 300px !important;
+            max-height: 300px !important;
+            overflow: hidden !important;
         }
     </style>
 
@@ -669,7 +688,7 @@ input[type="date"]::-moz-calendar-picker-indicator {
                 <span class="icon chart"></span>
             </a>
             <div class="icon-circle">
-                <img src="img/calendario.png" alt="">
+                <img src="img/calendarioBranco.png" alt="">
             </div>
         </div>
         <div class="perfil">
@@ -734,18 +753,27 @@ input[type="date"]::-moz-calendar-picker-indicator {
                                 'aceito' => '<img src="img/aprovado.png" alt="">',
                                 'negado' => '<img src="img/negado.png" alt="">',
                                 default => '<img src="img/pendente.png" alt="">',
-
                             };
+
                             $date = new DateTime($row['data_escolhida']);
                             $formattedDate = $date->format('d/m');
+                            ?>
 
-                            echo "<div class='history-item' data-id='{$row['id']}'>
-                                <div class='history-date'>{$formattedDate}</div>
-                                <div class='history-content'>
-                                    <p>Solicitou <strong>" . htmlspecialchars($row['opcao']) . "</strong> para " . htmlspecialchars($date->format('d \d\e F \d\e Y')) . ".</p>
+                            <div class="history-item" data-id="<?php echo $row['id']; ?>">
+                                <div class="history-date"><?php echo $formattedDate; ?></div>
+                                <div class="history-content">
+                                    <?php
+                                    $opcao = htmlspecialchars($row['opcao'] ?? 'Nenhuma opção');
+                                    echo "<p>Solicitou <strong>$opcao</strong></p>";
+                                    ?>
                                 </div>
-                                <div class='status-icon {$statusClass}'>{$statusIcon}</div>
-                              </div>";
+
+                                <div class="status-icon <?php echo $statusClass; ?>">
+                                    <?php echo $statusIcon; ?>
+                                </div>
+                            </div>
+
+                            <?php
                         }
                     } else {
                         echo "<p style='text-align: center; color: #a0aec0; font-size: 0.9rem;'>Você ainda não fez nenhuma solicitação.</p>";
@@ -753,6 +781,7 @@ input[type="date"]::-moz-calendar-picker-indicator {
                     ?>
                 </div>
             </div>
+
 
             <!-- Calendário -->
             <div class="calendar-section">
@@ -773,11 +802,11 @@ input[type="date"]::-moz-calendar-picker-indicator {
                 <div class="form-row">
                     <div class="form-group" style="position: relative;">
                         <input type="date" id="data" name="data" class="form-input" required
-                            placeholder="Data que você deseja marcar a solicitação" style="padding-right: 40px;">
+                            placeholder="Data que você deseja marcar a solicitação"
+                            style="padding-left: 50px; padding-right: 10px;">
 
-                        <img src="img/calendarioRoxo.png" alt="Abrir calendário"
-                            style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); width: 20px; height: 20px; cursor: pointer;"
-                            onclick="document.getElementById('data').showPicker()">
+                        <img src="img/calendarioRoxo.png" alt="Abrir calendário" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
+        width: 24px; height: 24px; cursor: pointer;" onclick="focarEForcarData()" />
                     </div>
 
 
@@ -803,20 +832,57 @@ input[type="date"]::-moz-calendar-picker-indicator {
                     </div>
                 </div>
                 <div class="form-group message-area">
-                    <div id="mensagem" contenteditable="true" class="form-input message-input">
+                    <input type="hidden" name="mensagem" id="mensagemOculta">
+
+                    <div id="mensagem" contenteditable="true" class="form-input message-input"
+                        onclick="limparMensagem()" onblur="restaurarMensagem()" data-vazio="true">
                         <img src="img/texto.png" alt="" style="width: 20px; vertical-align: middle;"> Explique sua
                         solicitação
                     </div>
 
-                    <input type="hidden" name="mensagem">
+                    <button type="submit" class="submit-btn">ENVIAR</button>
                 </div>
-
-                <button type="submit" class="submit-btn">ENVIAR</button>
             </form>
         </div>
     </div>
     </div>
     <script>
+        // SUBSTITUIR o conteúdo do campo oculto com a mensagem do contenteditable
+        document.querySelector('#solicitacaoForm').addEventListener('submit', function (e) {
+            const mensagem = document.getElementById('mensagem').innerText.trim();
+            document.getElementById('mensagemOculta').value = mensagem;
+        });
+
+        // Limpa a mensagem inicial ao clicar na div
+        function limparMensagem() {
+            const msgDiv = document.getElementById('mensagem');
+            if (msgDiv.innerText.includes("Explique sua solicitação")) {
+                msgDiv.innerHTML = ""; // Remove texto padrão
+            }
+        }
+
+        const mensagemDiv = document.getElementById('mensagem');
+
+        document.querySelector('#solicitacaoForm').addEventListener('submit', function (e) {
+            const mensagem = mensagemDiv.innerText.trim();
+            document.getElementById('mensagemOculta').value = mensagem;
+        });
+
+        function limparMensagem() {
+            if (mensagemDiv.getAttribute("data-vazio") === "true") {
+                mensagemDiv.innerHTML = "";
+                mensagemDiv.setAttribute("data-vazio", "false");
+            }
+        }
+
+        function restaurarMensagem() {
+            if (mensagemDiv.innerText.trim() === "") {
+                mensagemDiv.innerHTML = `<img src="img/texto.png" alt="" style="width: 20px; vertical-align: middle;"> Explique sua solicitação`;
+                mensagemDiv.setAttribute("data-vazio", "true");
+            }
+        }
+
+        // Dropdown personalizado
         function toggleDropdown() {
             let dropdown = document.getElementById('dropdown-options');
             let isOpen = dropdown.style.display === 'block';
@@ -831,6 +897,15 @@ input[type="date"]::-moz-calendar-picker-indicator {
             document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
         }
 
+        // Fecha dropdown se clicar fora
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dropdown')) {
+                document.getElementById('dropdown-options').style.display = 'none';
+                document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Envio do formulário
         document.getElementById('solicitacaoForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
@@ -851,12 +926,12 @@ input[type="date"]::-moz-calendar-picker-indicator {
                         const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
 
                         historyItem.innerHTML = `
-                <div class='history-date'>${formattedDate}</div>
-                <div class='history-content'>
-                    <p>Solicitou <strong>${data.opcao}</strong> para ${date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}.</p>
-                </div>
-                <div class='status-icon status-pendente'>●</div>
-            `;
+                        <div class='history-date'>${formattedDate}</div>
+                        <div class='history-content'>
+                            Solicitou <strong>"${data.opcao}"</strong>
+                        </div>
+                        <div class='status-icon status-pendente'>●</div>
+                    `;
                         historico.prepend(historyItem);
 
                         this.reset();
@@ -867,77 +942,67 @@ input[type="date"]::-moz-calendar-picker-indicator {
                 }).catch(() => alert('Erro na comunicação com o servidor.'));
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            if (calendarEl) {
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    locale: 'pt-br',
-                    initialView: 'dayGridMonth',
-                    events: 'eventos.php?',
-                    eventDisplay: 'block',
-                    headerToolbar: false,
-                    dayMaxEvents: false,
-                    height: 'auto'
-                });
-                calendar.render();
-            }
+        // CALENDÁRIO
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    if (calendarEl) {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'pt-br',
+            initialView: 'dayGridMonth',
+            events: 'eventos.php?',
+            eventDisplay: 'block',
+            headerToolbar: false,
+            dayMaxEvents: false,
+            height: 200 // ← altura total do calendário
+        });
+        calendar.render();
+
+        // Atualiza o título personalizado
+        function updateTitle() {
+            const date = calendar.getDate();
+            const formatter = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
+            document.querySelector('.calendar-title').innerText = formatter.format(date);
+        }
+
+        // Botões de navegação
+        document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function () {
+            calendar.prev();
+            updateTitle();
         });
 
-        // Fechar dropdown ao clicar fora
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.dropdown')) {
-                document.getElementById('dropdown-options').style.display = 'none';
-                document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
-            }
+        document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function () {
+            calendar.next();
+            updateTitle();
         });
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar;
 
-            if (calendarEl) {
-                calendar = new FullCalendar.Calendar(calendarEl, {
-                    locale: 'pt-br',
-                    initialView: 'dayGridMonth',
-                    events: 'eventos.php?',
-                    eventDisplay: 'block',
-                    headerToolbar: false,
-                    dayMaxEvents: false,
-                    height: 'auto'
-                });
-                calendar.render();
+        updateTitle(); // Inicializa o título
+    }
+});
 
-                // Atualiza o título ao mudar de mês
-                function updateTitle() {
-                    const date = calendar.getDate();
-                    const formatter = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
-                    document.querySelector('.calendar-title').innerText = formatter.format(date);
-                }
 
-                // Botões personalizados
-                document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function () {
-                    calendar.prev();
-                    updateTitle();
-                });
-
-                document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function () {
-                    calendar.next();
-                    updateTitle();
-                });
-
-                // Inicializa o título
-                updateTitle();
-            }
-        });
+        // Sincroniza innerHTML do campo editável com o campo oculto no submit
         const form = document.querySelector('form');
         const editableDiv = document.querySelector('#mensagem');
         const hiddenInput = document.querySelector('input[name="mensagem"]');
 
         form.addEventListener('submit', function (e) {
             hiddenInput.value = editableDiv.innerHTML;
-            // ou use innerText se quiser só texto puro
         });
+        function focarEForcarData() {
+            const inputData = document.getElementById('data');
+            inputData.focus();
+
+            // Tenta forçar o calendário abrir
+            if (typeof inputData.showPicker === 'function') {
+                inputData.showPicker();
+            } else {
+                // Fallback: abre manualmente um modal ou simplesmente foca no input
+                console.log("showPicker não é suportado neste navegador.");
+            }
+        }
 
     </script>
+
 
     </div>
     </div>

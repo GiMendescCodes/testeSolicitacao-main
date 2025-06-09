@@ -21,7 +21,6 @@ $stmt->bind_param("sss", $data, $opcao, $mensagem);
 
 if ($stmt->execute()) {
     $id = $stmt->insert_id;
-    // Retorna os dados para adicionar no histórico sem recarregar
     echo json_encode([
         'success' => true,
         'data' => $data,
