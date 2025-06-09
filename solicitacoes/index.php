@@ -52,6 +52,11 @@ if ($proxFerias) {
 
 
     <style>
+        .setaDrop{
+            color: #6c63ff;
+            font-size: 20px;
+            margin-right: 50px;
+        }
         input[type="date"]::-webkit-calendar-picker-indicator {
             opacity: 0;
             -webkit-appearance: none;
@@ -328,16 +333,22 @@ if ($proxFerias) {
         .form-input,
         .dropdown-btn {
             padding: 12px 14px;
-            border: 1px solid rgba(136, 92, 255, 0.2);
-            border-radius: 12px;
+            border: 1px solid #6c63ff;
+            border-radius: 22px;
             font-size: 13px;
             background: #ffffff;
             color: #a3a3c2;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.5s, box-shadow 0.3s;
         }
 
         .form-input {
             width: 384px;
+            height: 52px;
+            border-radius: 22px;
+            border: solid 1px #6E6DFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .form-input img {
@@ -391,10 +402,9 @@ if ($proxFerias) {
             right: 0;
             background: #ffffff;
             border: 1px solid rgba(136, 92, 255, 0.2);
-            border-radius: 12px;
+            border-radius: 0 0 12px 12px;
             box-shadow: 0 0 10px rgba(136, 92, 255, 0.2);
             z-index: 1000;
-            margin-top: 5px;
         }
 
         .dropdown-options div {
@@ -453,11 +463,9 @@ if ($proxFerias) {
 
         .fc-day-today {
             background: rgba(102, 126, 234, 0.1) !important;
+            border: 1px solid #1a202c;
         }
 
-        .fc-daygrid-day:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
 
         .fixo {
             position: fixed;
@@ -620,10 +628,10 @@ if ($proxFerias) {
 
         .fc-daygrid-day {
             background-color: #D2D2FF;
-            border: 1px solid black;
             padding: 4px !important;
             min-width: 28px !important;
             min-height: 28px !important;
+            border: 1px solid black !important;
         }
 
         .fc-daygrid-day-number {
@@ -633,7 +641,7 @@ if ($proxFerias) {
         }
 
         .fc-day-today {
-            background-color: #1EC1BA !important;
+            background-color: white !important;
             color: #FFFFFF !important;
         }
 
@@ -646,9 +654,10 @@ if ($proxFerias) {
             border: none;
         }
 
-        .fc-day-other {
-            background-color: #4746D8;
-            color: #7C71F8;
+        .fc-scrollgrid {
+            width: 100% !important;
+            height: 300px !important;
+            table-layout: fixed;
         }
 
         /* Cabeçalho com os nomes dos dias */
@@ -818,7 +827,7 @@ if ($proxFerias) {
                                 <div class="dropdown-btn" id="selected-option">
                                     <span><img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
                                         solicitação</span>
-                                    <span>▼</span>
+                                    <span class="setaDrop">▼</span>
                                 </div>
                                 <div id="dropdown-options" class="dropdown-options" style="display: none;">
                                     <div onclick="selecionarOpcao('Home office')">Home office</div>
@@ -943,41 +952,41 @@ if ($proxFerias) {
         });
 
         // CALENDÁRIO
-document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    if (calendarEl) {
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            locale: 'pt-br',
-            initialView: 'dayGridMonth',
-            events: 'eventos.php?',
-            eventDisplay: 'block',
-            headerToolbar: false,
-            dayMaxEvents: false,
-            height: 350
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            if (calendarEl) {
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    locale: 'pt-br',
+                    initialView: 'dayGridMonth',
+                    events: 'eventos.php?',
+                    eventDisplay: 'block',
+                    headerToolbar: false,
+                    dayMaxEvents: false,
+                    height: 350
+                });
+                calendar.render();
+
+                // Atualiza o título personalizado
+                function updateTitle() {
+                    const date = calendar.getDate();
+                    const formatter = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
+                    document.querySelector('.calendar-title').innerText = formatter.format(date);
+                }
+
+                // Botões de navegação
+                document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function () {
+                    calendar.prev();
+                    updateTitle();
+                });
+
+                document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function () {
+                    calendar.next();
+                    updateTitle();
+                });
+
+                updateTitle(); // Inicializa o título
+            }
         });
-        calendar.render();
-
-        // Atualiza o título personalizado
-        function updateTitle() {
-            const date = calendar.getDate();
-            const formatter = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
-            document.querySelector('.calendar-title').innerText = formatter.format(date);
-        }
-
-        // Botões de navegação
-        document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function () {
-            calendar.prev();
-            updateTitle();
-        });
-
-        document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function () {
-            calendar.next();
-            updateTitle();
-        });
-
-        updateTitle(); // Inicializa o título
-    }
-});
 
 
         // Sincroniza innerHTML do campo editável com o campo oculto no submit
