@@ -7,7 +7,7 @@ if ($conn->connect_error) {
 $sql = "SELECT id, data_escolhida, opcao, status FROM dados ORDER BY id DESC LIMIT 6";
 $result = $conn->query($sql);
 
-$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = 'Folgas' AND status = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
+$sqlFolga = "SELECT data_escolhida FROM dados WHERE opcao = '' AND status = 'aceito' AND data_escolhida >= CURDATE() ORDER BY data_escolhida ASC LIMIT 1";
 $resultFolga = $conn->query($sqlFolga);
 $proxFolga = null;
 if ($resultFolga && $resultFolga->num_rows > 0) {
@@ -824,7 +824,7 @@ if ($proxFerias) {
                                     <div onclick="selecionarOpcao('Home office')">Home office</div>
                                     <div onclick="selecionarOpcao('Treinamento')">Treinamento</div>
                                     <div onclick="selecionarOpcao('Férias')">Férias</div>
-                                    <div onclick="selecionarOpcao('Folgas')">Folgas</div>
+                                    <div onclick="selecionarOpcao('Folga')">Folga</div>
                                 </div>
                             </div>
                             <input type="hidden" name="opcao" id="opcao-selecionada" required>
@@ -953,7 +953,7 @@ document.addEventListener('DOMContentLoaded', function () {
             eventDisplay: 'block',
             headerToolbar: false,
             dayMaxEvents: false,
-            height: 200 // ← altura total do calendário
+            height: 350
         });
         calendar.render();
 

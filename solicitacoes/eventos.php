@@ -18,7 +18,7 @@ if ($result->num_rows > 0) {
             case 'Férias':
                 $cor = '#ff9f89';
                 break;
-            case 'Folgas':
+            case 'Folga':
                 $cor = '#ffd966';
                 break;
             case 'Home office':
