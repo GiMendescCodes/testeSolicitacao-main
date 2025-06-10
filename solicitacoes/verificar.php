@@ -249,16 +249,18 @@ $result = $conn->query($sql);
         }
 
         .card-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    background-color: white; /* ou testando com uma cor bem visível, tipo red */
-    padding: 10px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            background-color: white;
+            /* ou testando com uma cor bem visível, tipo red */
+            padding: 10px 16px;
             margin-top: -15px;
-    border-radius: 0 0 30px 30px;
-    height: auto; /* ou um valor fixo se preferir */
-    position: absolute;
+            border-radius: 0 0 30px 30px;
+            height: auto;
+            /* ou um valor fixo se preferir */
+            position: absolute;
         }
 
         .dot {
@@ -345,7 +347,7 @@ $result = $conn->query($sql);
             flex-direction: row;
         }
 
-        .status-summary img{
+        .status-summary img {
             width: 244px;
             height: 244px;
         }
@@ -363,12 +365,13 @@ $result = $conn->query($sql);
         }
 
         .solicitation-card {
-            background: linear-gradient(135deg, #f8f9ff 0%, #e6f0ff 100%);
-            border: 2px solid #667eea;
-            border-radius: 20px;
+            background: none;
+            border: 5px solid #6E6DFF;
+            border-radius: 60px;
             padding: 30px;
             margin-bottom: 20px;
             position: relative;
+            width: 1160px;
         }
 
         .card-header {
@@ -393,7 +396,9 @@ $result = $conn->query($sql);
         .employee-name {
             font-size: 18px;
             font-weight: 600;
-            color: #333;
+            color: white;
+            background-color: #9998FF;
+            border-radius: 0 30px 30px 0;
         }
 
         .request-type,
@@ -405,23 +410,23 @@ $result = $conn->query($sql);
         }
 
         .request-type {
-            background: #667eea;
+            background: #9998FF;
             color: white;
         }
 
         .request-date {
-            background: #e6f0ff;
-            color: #667eea;
+            background-color: #9998FF;
+            color: white;
         }
 
         .card-content-text {
-            background: rgba(255, 255, 255, 0.8);
+            background: #9998FF;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 25px;
             font-size: 14px;
             line-height: 1.6;
-            color: #555;
+            color: white;
         }
 
         .card-actions {
@@ -441,13 +446,19 @@ $result = $conn->query($sql);
         }
 
         .btn-approve {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: #6E6DFF;
             color: white;
+            box-shadow: 18px 16px 15px -7px rgba(110,109,255,0.54);
+-webkit-box-shadow: 18px 16px 15px -7px rgba(110,109,255,0.54);
+-moz-box-shadow: 18px 16px 15px -7px rgba(110,109,255,0.54);
         }
 
         .btn-deny {
-            background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
+            background: #6E6DFF;
             color: white;
+            box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
+            -webkit-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
+            -moz-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
         }
 
         .no-requests {
