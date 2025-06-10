@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "solicitacaoo");
+$conn = new mysqli("localhost", "root", "", "solicitacao");
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
@@ -56,6 +56,85 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justificativas</title>
     <style>
+                .fixo {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+             .perfil {
+            background-image: url(./img/bola.png);
+            display: flex;
+            align-items: center;
+            border-radius: 40px;
+            margin-top: 50px;
+            width: 65px;
+            height: 68px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .person {
+            background-image: url(./img/person.png);
+            width: 35px;
+            height: 28px;
+            margin-left: 3px
+        }
+
+        .tudo {
+            margin-left: 150px;
+            padding: 20px;
+            width: 1200px;
+            /* largura fixa */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .header-text h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .header-text p {
+            color: #718096;
+            font-size: 16px;
+        }
+        .sidebar {
+            width: 70px;
+            background-color: #6c63ff;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 40px;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -64,7 +143,7 @@ $result = $conn->query($sql);
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #EEEEFF;
             min-height: 100vh;
             padding: 20px;
         }
@@ -447,19 +526,30 @@ $result = $conn->query($sql);
 </head>
 <body>
     <div class="container">
+    <div class="fixo">
+        <img class="logo" src="./img/augebit.png" alt="">
         <div class="sidebar">
-            <div class="logo"></div>
-            <div class="nav-icon active">🏠</div>
-            <div class="nav-icon">🕒</div>
-            <div class="nav-icon">💰</div>
-            <div class="nav-icon">🎓</div>
-            <div class="nav-icon">📊</div>
-            <div class="nav-icon">📅</div>
-            <div style="margin-top: auto;">
-                <div class="nav-icon">👤</div>
+            <a href="" class="menu-item">
+                <span class="icon home"></span>
+            </a>
+            <a href="notebook.html" class="menu-item">
+                <span class="icon notebook"></span>
+            </a>
+            <a href="cap.html" class="menu-item">
+                <span class="icon cap"></span>
+            </a>
+            <a href="chart.html" class="menu-item">
+                <span class="icon chart"></span>
+            </a>
+            <div class="icon-circle">
+                <img src="img/calendarioBranco.png" alt="">
             </div>
         </div>
-
+        <div class="perfil">
+            <a class="person" href=""></a>
+        </div>
+    </div>
+        <div class="tudo">
         <div class="main-content">
             <div class="left-section">
                 <div class="header">
@@ -557,6 +647,7 @@ $result = $conn->query($sql);
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
