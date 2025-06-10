@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "solicitacaoo");
+$conn = new mysqli("localhost", "root", "", "solicitacao");
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
@@ -52,11 +52,6 @@ if ($proxFerias) {
 
 
     <style>
-        .setaDrop{
-            color: #6c63ff;
-            font-size: 20px;
-            margin-right: 50px;
-        }
         input[type="date"]::-webkit-calendar-picker-indicator {
             opacity: 0;
             -webkit-appearance: none;
@@ -345,7 +340,7 @@ if ($proxFerias) {
             width: 384px;
             height: 52px;
             border-radius: 22px;
-            border: solid 1px #6E6DFF;
+            border: solid 1px #9998FF;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -375,15 +370,7 @@ if ($proxFerias) {
             /* Evita distorção */
         }
 
-        .form-input:focus,
-        .dropdown-btn:focus,
-        .message-input:focus {
-            outline: none;
-            border-color: rgba(136, 92, 255, 0.6);
-            box-shadow: 0 0 0 3px rgba(136, 92, 255, 0.2);
-        }
-
-
+        /* Estilização do botão do dropdown */
         .dropdown {
             position: relative;
         }
@@ -393,18 +380,46 @@ if ($proxFerias) {
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            border: 1px solid #9998FF;
+            height: 52px;
+            border-radius: 22px;
+            padding: 10px 14px;
+            background: #fff;
+            transition: border-radius 0.3s ease;
         }
 
+        /* Estilização da seta com animação */
+        .setaDrop {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            font-size: 20px;
+            margin-left: 8px;
+            color: #9998FF;
+        }
+
+        /* Quando o dropdown está aberto (aria-expanded = true) */
+        .dropdown[aria-expanded="true"] .setaDrop {
+            transform: rotate(90deg);
+            /* seta vira pra baixo */
+        }
+
+        .dropdown[aria-expanded="true"] .dropdown-btn {
+            border-radius: 12px 12px 0 0;
+            border-bottom: none;
+        }
+
+        /* Caixa com as opções do dropdown */
         .dropdown-options {
             position: absolute;
             top: 100%;
             left: 0;
             right: 0;
             background: #ffffff;
-            border: 1px solid rgba(136, 92, 255, 0.2);
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 0 10px rgba(136, 92, 255, 0.2);
+            border: 1px solid #9998FF;
+            border-top: none;
+            border-radius: 0 0 22px 22px;
             z-index: 1000;
+            transition: opacity 0.s ease ease-in-out, transform 0.5s ease-in-out;
         }
 
         .dropdown-options div {
@@ -412,20 +427,48 @@ if ($proxFerias) {
             cursor: pointer;
             font-size: 13px;
             color: #a3a3c2;
+            border-top: solid 0.5px #9998FF;
         }
 
         .dropdown-options div:hover {
-            background: rgba(136, 92, 255, 0.05);
+            background: #9998FF;
+            color: white;
+        }
+
+        /* Foco acessível */
+        .form-input:focus,
+        .dropdown-btn:focus,
+        .message-input:focus {
+            outline: none;
+            border-color: rgba(136, 92, 255, 0.6);
+            box-shadow: 0 0 0 3px rgba(136, 92, 255, 0.2);
         }
 
         .message-area {
             grid-column: 1 / -1;
         }
 
+        .itensM {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .itensP {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .message-input {
             min-height: 120px;
             resize: none;
             font-family: inherit;
+            width: 1180;
+            border: solid 1px #9998FF;
+            display: flex;
+            justify-content: start;
+            align-items: start;
         }
 
         .submit-btn {
@@ -766,7 +809,7 @@ if ($proxFerias) {
 
                             $date = new DateTime($row['data_escolhida']);
                             $formattedDate = $date->format('d/m');
-                            ?>
+                    ?>
 
                             <div class="history-item" data-id="<?php echo $row['id']; ?>">
                                 <div class="history-date"><?php echo $formattedDate; ?></div>
@@ -782,7 +825,7 @@ if ($proxFerias) {
                                 </div>
                             </div>
 
-                            <?php
+                    <?php
                         }
                     } else {
                         echo "<p style='text-align: center; color: #a0aec0; font-size: 0.9rem;'>Você ainda não fez nenhuma solicitação.</p>";
@@ -825,9 +868,10 @@ if ($proxFerias) {
                         <div class="opcao">
                             <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
                                 <div class="dropdown-btn" id="selected-option">
-                                    <span><img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
-                                        solicitação</span>
-                                    <span class="setaDrop">▼</span>
+                                        <span class="itensP"> <img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
+                                            solicitação</span>
+                                    <span class="setaDrop">▶</span>
+
                                 </div>
                                 <div id="dropdown-options" class="dropdown-options" style="display: none;">
                                     <div onclick="selecionarOpcao('Home office')">Home office</div>
@@ -845,8 +889,10 @@ if ($proxFerias) {
 
                     <div id="mensagem" contenteditable="true" class="form-input message-input"
                         onclick="limparMensagem()" onblur="restaurarMensagem()" data-vazio="true">
-                        <img src="img/texto.png" alt="" style="width: 20px; vertical-align: middle;"> Explique sua
-                        solicitação
+                        <div class="itensM">
+                            <img src="img/texto.png" alt="" style="width: 20px; vertical-align: middle;"> Explique sua
+                            solicitação
+                        </div>
                     </div>
 
                     <button type="submit" class="submit-btn">ENVIAR</button>
@@ -857,7 +903,7 @@ if ($proxFerias) {
     </div>
     <script>
         // SUBSTITUIR o conteúdo do campo oculto com a mensagem do contenteditable
-        document.querySelector('#solicitacaoForm').addEventListener('submit', function (e) {
+        document.querySelector('#solicitacaoForm').addEventListener('submit', function(e) {
             const mensagem = document.getElementById('mensagem').innerText.trim();
             document.getElementById('mensagemOculta').value = mensagem;
         });
@@ -872,7 +918,7 @@ if ($proxFerias) {
 
         const mensagemDiv = document.getElementById('mensagem');
 
-        document.querySelector('#solicitacaoForm').addEventListener('submit', function (e) {
+        document.querySelector('#solicitacaoForm').addEventListener('submit', function(e) {
             const mensagem = mensagemDiv.innerText.trim();
             document.getElementById('mensagemOculta').value = mensagem;
         });
@@ -893,37 +939,45 @@ if ($proxFerias) {
 
         // Dropdown personalizado
         function toggleDropdown() {
-            let dropdown = document.getElementById('dropdown-options');
-            let isOpen = dropdown.style.display === 'block';
-            dropdown.style.display = isOpen ? 'none' : 'block';
-            document.querySelector('.dropdown').setAttribute('aria-expanded', !isOpen);
+            const dropdown = document.querySelector('.dropdown');
+            const options = document.getElementById('dropdown-options');
+            const isOpen = dropdown.getAttribute('aria-expanded') === 'true';
+
+            dropdown.setAttribute('aria-expanded', !isOpen);
+            options.style.display = isOpen ? 'none' : 'block';
         }
 
         function selecionarOpcao(opcao) {
             document.querySelector('#selected-option span:first-child').innerText = opcao;
             document.getElementById('opcao-selecionada').value = opcao;
+
+            const dropdown = document.querySelector('.dropdown');
+            dropdown.setAttribute('aria-expanded', 'false');
             document.getElementById('dropdown-options').style.display = 'none';
-            document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
         }
 
-        // Fecha dropdown se clicar fora
-        document.addEventListener('click', function (e) {
+        // Fecha dropdown ao clicar fora
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.dropdown');
+            const options = document.getElementById('dropdown-options');
+
             if (!e.target.closest('.dropdown')) {
-                document.getElementById('dropdown-options').style.display = 'none';
-                document.querySelector('.dropdown').setAttribute('aria-expanded', 'false');
+                dropdown.setAttribute('aria-expanded', 'false');
+                options.style.display = 'none';
             }
         });
 
+
         // Envio do formulário
-        document.getElementById('solicitacaoForm').addEventListener('submit', function (e) {
+        document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const formData = new FormData(this);
 
             fetch('processar.php', {
-                method: 'POST',
-                body: formData
-            }).then(resp => resp.json())
+                    method: 'POST',
+                    body: formData
+                }).then(resp => resp.json())
                 .then(data => {
                     if (data.success) {
                         const historico = document.getElementById('historico');
@@ -932,7 +986,10 @@ if ($proxFerias) {
                         historyItem.dataset.id = data.id;
 
                         const date = new Date(data.data);
-                        const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                        const formattedDate = date.toLocaleDateString('pt-BR', {
+                            day: '2-digit',
+                            month: '2-digit'
+                        });
 
                         historyItem.innerHTML = `
                         <div class='history-date'>${formattedDate}</div>
@@ -952,7 +1009,7 @@ if ($proxFerias) {
         });
 
         // CALENDÁRIO
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             if (calendarEl) {
                 var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -969,17 +1026,20 @@ if ($proxFerias) {
                 // Atualiza o título personalizado
                 function updateTitle() {
                     const date = calendar.getDate();
-                    const formatter = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
+                    const formatter = new Intl.DateTimeFormat('pt-BR', {
+                        month: 'long',
+                        year: 'numeric'
+                    });
                     document.querySelector('.calendar-title').innerText = formatter.format(date);
                 }
 
                 // Botões de navegação
-                document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function () {
+                document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function() {
                     calendar.prev();
                     updateTitle();
                 });
 
-                document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function () {
+                document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function() {
                     calendar.next();
                     updateTitle();
                 });
@@ -994,9 +1054,10 @@ if ($proxFerias) {
         const editableDiv = document.querySelector('#mensagem');
         const hiddenInput = document.querySelector('input[name="mensagem"]');
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             hiddenInput.value = editableDiv.innerHTML;
         });
+
         function focarEForcarData() {
             const inputData = document.getElementById('data');
             inputData.focus();
@@ -1009,7 +1070,6 @@ if ($proxFerias) {
                 console.log("showPicker não é suportado neste navegador.");
             }
         }
-
     </script>
 
 

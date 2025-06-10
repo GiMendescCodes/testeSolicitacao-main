@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$conn = new mysqli("localhost", "root", "", "solicitacaoo");
+$conn = new mysqli("localhost", "root", "", "solicitacao");
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
@@ -46,6 +46,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Solicitações</title>
+    <link rel="icon" href="img/augebit.png" type="image/png">
     <style>
         .tudo {
             padding: 20px;
@@ -196,7 +197,7 @@ $result = $conn->query($sql);
         .carousel-container {
             overflow: hidden;
             width: 100%;
-            max-width: 1200px;
+            max-width: 700px;
             overflow: hidden;
         }
 
@@ -205,11 +206,10 @@ $result = $conn->query($sql);
             background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             gap: 40px;
-            min-width: 100%; /* ocupa toda a largura da container */
+            width: 700px;
             flex-shrink: 0;
         }
 
@@ -249,8 +249,16 @@ $result = $conn->query($sql);
         }
 
         .card-dots {
-            display: flex;
-            gap: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background-color: white; /* ou testando com uma cor bem visível, tipo red */
+    padding: 10px 16px;
+            margin-top: -15px;
+    border-radius: 0 0 30px 30px;
+    height: auto; /* ou um valor fixo se preferir */
+    position: absolute;
         }
 
         .dot {
@@ -318,16 +326,28 @@ $result = $conn->query($sql);
             padding: 40px;
         }
 
+        .parte1 {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+
         .status-summary {
-            position: absolute;
-            top: 30px;
-            right: 40px;
             background: white;
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 200px;
+            width: 400px;
+            height: 250px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .status-summary img{
+            width: 244px;
+            height: 244px;
         }
 
         .status-number {
@@ -445,11 +465,11 @@ $result = $conn->query($sql);
         <img class="logo" src="./img/augebit.png" alt="">
         <div class="sidebar">
             <a href="" class="menu-item"><span class="icon home"></span></a>
-            <a href="" class="menu-item"><span class="icon people"></span></a>
+            <div class="icon-circle"><img src="img/person.png" alt=""></div>
             <a href="" class="menu-item"><span class="icon docs"></span></a>
             <a href="" class="Home icon"><span class="icon heat"></span></a>
             <a href="" class="menu-item"><span class="icon grafico"></span></a>
-            <div class="icon-circle"> <img src="img/calendario.png"></div>
+            <a href="" class="calendario-item"><span class="icon calendario"></span></a>
         </div>
         <div class="perfil">
             <a class="person" href=""></a>
@@ -482,12 +502,6 @@ $result = $conn->query($sql);
                                             setor de
                                             RH.
                                         </div>
-                                        <div class="card-dots">
-                                            <div class="dot active"></div>
-                                            <div class="dot"></div>
-                                            <div class="dot"></div>
-                                            <div class="dot"></div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -505,12 +519,6 @@ $result = $conn->query($sql);
                                             Ana Costa (12/06) e Marcos Pereira (25/06). Desejamos a todos muitas
                                             felicidades, sucesso e realizações! Que este novo ciclo seja repleto de
                                             conquistas e momentos especiais. Parabéns a todos!
-                                        </div>
-                                        <div class="card-dots">
-                                            <div class="dot"></div>
-                                            <div class="dot active"></div>
-                                            <div class="dot"></div>
-                                            <div class="dot"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -534,12 +542,6 @@ $result = $conn->query($sql);
                                             toda a equipe para atingir essa meta e melhorar ainda mais nossos processos
                                             internos!
                                         </div>
-                                        <div class="card-dots">
-                                            <div class="dot"></div>
-                                            <div class="dot"></div>
-                                            <div class="dot active"></div>
-                                            <div class="dot"></div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -562,14 +564,14 @@ $result = $conn->query($sql);
                                             habilidades
                                             e expandir seus conhecimentos!
                                         </div>
-                                        <div class="card-dots">
-                                            <div class="dot"></div>
-                                            <div class="dot"></div>
-                                            <div class="dot"></div>
-                                            <div class="dot active"></div>
-                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot active"></div>
                             </div>
                         </div>
                     </div>
@@ -637,41 +639,41 @@ $result = $conn->query($sql);
     </div>
 
     <script>
-      let currentSlide = 0;
-const totalSlides = 4;
+        let currentSlide = 0;
+        const totalSlides = 4;
 
-function updateCarousel() {
-    const slideWidth = 1200; // largura fixa
-    const carousel = document.getElementById('carousel');
-    
-    const offset = currentSlide * slideWidth;
-    carousel.style.transform = `translateX(-${offset}px)`;
+        function updateCarousel() {
+            const slideWidth = 700; // largura fixa
+            const carousel = document.getElementById('carousel');
 
-    document.querySelectorAll('.dot').forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentSlide);
-    });
-}
+            const offset = currentSlide * slideWidth;
+            carousel.style.transform = `translateX(-${offset}px)`;
 
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateCarousel();
-}
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
 
-function previousSlide() {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateCarousel();
-}
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
 
-// Auto-advance
-setInterval(nextSlide, 5000);
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
 
-// Make dots clickable
-document.querySelectorAll('.dot').forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-        currentSlide = index;
-        updateCarousel();
-    });
-});
+        // Auto-advance
+        setInterval(nextSlide, 5000);
+
+        // Make dots clickable
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateCarousel();
+            });
+        });
 
 
 
@@ -691,6 +693,14 @@ document.querySelectorAll('.dot').forEach((dot, index) => {
                     console.error(error);
                 });
         }
+        document.querySelectorAll('#dots .dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateCarousel();
+            });
+        });
+
+        updateCarousel();
     </script>
 </body>
 
