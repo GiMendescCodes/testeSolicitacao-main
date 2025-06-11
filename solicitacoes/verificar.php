@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$conn = new mysqli("localhost", "root", "", "solicitacao");
+$conn = new mysqli("localhost", "root", "", "solicitacaoo");
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
@@ -48,6 +48,37 @@ $result = $conn->query($sql);
     <title>Painel de Solicitações</title>
     <link rel="icon" href="img/augebit.png" type="image/png">
     <style>
+        @font-face {
+            font-family: 'fonte1';
+            src: url('fontes/euroStyle Normal.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'fonte2';
+            src: url('fontes/Montserrat-VariableFont_wght.ttf');
+        }
+
+        .tituloInicial {
+            margin-left: 65px;
+            margin-bottom: 15px;
+        }
+
+        .titulo {
+            font-family: 'fonte1', euroStyle;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 50px;
+
+        }
+
+        .subtitulo {
+            font-family: 'fonte2', Montserrat, sans-serif;
+            font-weight: 300;
+            font-size: 25px;
+        }
+
         .tudo {
             padding: 20px;
             width: 1200px;
@@ -196,21 +227,25 @@ $result = $conn->query($sql);
 
         .carousel-container {
             overflow: hidden;
-            width: 100%;
-            max-width: 700px;
-            overflow: hidden;
+            width: 710px;
+            border-radius: 20px;
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
         }
 
         .carousel-card {
             height: 255px;
+            width: 710px;
             background: white;
             border-radius: 20px;
             padding: 40px;
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 50px;
             width: 700px;
             flex-shrink: 0;
+
         }
 
         .card-illustration {
@@ -226,7 +261,7 @@ $result = $conn->query($sql);
         }
 
         .card-content {
-            width: 700px;
+            width: 710px;
         }
 
         .card-title {
@@ -332,6 +367,7 @@ $result = $conn->query($sql);
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            margin-left: 75px;
 
         }
 
@@ -339,12 +375,21 @@ $result = $conn->query($sql);
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 400px;
             height: 250px;
             display: flex;
             flex-direction: row;
+            margin-left: 45px;
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+        }
+
+        .pendentes {
+            background-color: rgba(153, 152, 255, 0.5);
+            color: black;
+
         }
 
         .status-summary img {
@@ -353,15 +398,23 @@ $result = $conn->query($sql);
         }
 
         .status-number {
-            font-size: 32px;
+            font-size: 20px;
             font-weight: 700;
-            color: #667eea;
+            color: white;
             margin-bottom: 5px;
+            background-color: #9998FF;
+            height: 28px;
+            width: 38px;
+            border-radius: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .status-label {
-            font-size: 14px;
-            color: #666;
+            font-family: 'fonte2', Montserrat, sans-serif;
+            color: black;
+            font-size: 20px;
         }
 
         .solicitation-card {
@@ -384,7 +437,7 @@ $result = $conn->query($sql);
         .employee-avatar {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #9998FF;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -448,9 +501,9 @@ $result = $conn->query($sql);
         .btn-approve {
             background: #6E6DFF;
             color: white;
-            box-shadow: 18px 16px 15px -7px rgba(110,109,255,0.54);
--webkit-box-shadow: 18px 16px 15px -7px rgba(110,109,255,0.54);
--moz-box-shadow: 18px 16px 15px -7px rgba(110,109,255,0.54);
+            box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
+            -webkit-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
+            -moz-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
         }
 
         .btn-deny {
@@ -489,6 +542,10 @@ $result = $conn->query($sql);
     </div>
     <div class="tudo">
         <div class="content-area">
+            <div class="tituloInicial">
+                <h1 class="titulo">Painel de solicitacoes</h1>
+                <h3 class="subtitulo">Analise as solicitações feitas pelos funcionários</h3>
+            </div>
             <div class="container">
                 <div class="parte1">
                     <div class="carousel-section">
@@ -593,7 +650,8 @@ $result = $conn->query($sql);
                     ?>
                     <div class="status-summary">
                         <div class="status-number"><?php echo $pendingCount; ?></div>
-                        <div class="status-label">solicitações<br>pendentes de<br>análise</div>
+                        <div class="status-label">solicitações<br><span class="pendentes">pendentes</span> de análise
+                        </div>
                         <img src="img/numero.png" alt="">
                     </div>
                 </div>
@@ -629,7 +687,7 @@ $result = $conn->query($sql);
                                     echo "</div>";
                                 } else {
                                     echo "<div class='card-actions'>";
-                                    echo "<div style='padding: 10px 20px; background: " . ($row['status'] === 'aceito' ? '#4CAF50' : '#f44336') . "; color: white; border-radius: 20px; font-weight: 600;'>";
+                                    echo "<div style='padding: 10px 20px; background: " . ($row['status'] === 'aceito' ? '#FFFFFF' : '#FFFFFF') . "; color: #9998FF; border-radius: 20px; font-weight: 600;'>";
                                     echo "Status: " . ucfirst($row['status']);
                                     echo "</div>";
                                     echo "</div>";
