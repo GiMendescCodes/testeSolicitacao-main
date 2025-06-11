@@ -52,6 +52,23 @@ if ($proxFerias) {
 
 
     <style>
+        @font-face {
+            font-family: 'fonte1';
+            src: url('fontes/euroStyle Normal.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'fonte2';
+            src: url('fontes/Montserrat-VariableFont_wght.ttf');
+        }
+
+        @font-face {
+            font-family: 'fonte3';
+            src: url('fontes/MontserratAlternates-SemiBold.ttf');
+        }
+
         input[type="date"]::-webkit-calendar-picker-indicator {
             opacity: 0;
             -webkit-appearance: none;
@@ -128,15 +145,19 @@ if ($proxFerias) {
         }
 
         .header-text h1 {
-            font-size: 32px;
-            font-weight: 600;
-            color: #1a202c;
+            font-size: 48px;
+            color: black;
             margin-bottom: 4px;
+            font-style: normal;
+            font-weight: lighter;
+            font-family: 'fonte1', euroStyle;
         }
 
         .header-text p {
-            color: #718096;
-            font-size: 16px;
+            color: black;
+            font-size: 24px;
+            font-family: 'font2', sans-serif;
+            font-weight: lighter;
         }
 
         .main-grid {
@@ -200,13 +221,14 @@ if ($proxFerias) {
 
         .count-number {
             font-size: 64px;
-            font-weight: 700;
+            font-weight: bolder;
             color: #5A4AE3;
             line-height: 1;
             align-items: flex-end;
             align-content: end;
             text-align: end;
             margin-bottom: -5px;
+            font-family: 'fonte2', sans-serif;
         }
 
         .count-text {
@@ -215,6 +237,7 @@ if ($proxFerias) {
             font-family: 'Montserrat Alternates', sans-serif;
             line-height: 1.2;
             font-weight: 500;
+            font-family: 'fonte2', sans-serif;
             /* margin-top: -15px; */
         }
 
@@ -245,6 +268,7 @@ if ($proxFerias) {
             width: 100%;
             padding: 16px 0;
             text-align: center;
+            font-family: 'fonte3' sans-serif;
         }
 
         .tituloH h2 {
@@ -258,7 +282,7 @@ if ($proxFerias) {
             align-items: center;
             justify-content: space-between;
             padding: 12px 20px;
-            /* padding interno só nos itens */
+            font-family: 'fonte2', sans-serif;
             border-bottom: 1px solid #9998FF;
         }
 
@@ -270,6 +294,7 @@ if ($proxFerias) {
             font-weight: bold;
             margin-right: 10px;
             min-width: 50px;
+            font-family: 'fonte2', sans-serif;
         }
 
         .history-content {
@@ -809,7 +834,7 @@ if ($proxFerias) {
 
                             $date = new DateTime($row['data_escolhida']);
                             $formattedDate = $date->format('d/m');
-                    ?>
+                            ?>
 
                             <div class="history-item" data-id="<?php echo $row['id']; ?>">
                                 <div class="history-date"><?php echo $formattedDate; ?></div>
@@ -825,7 +850,7 @@ if ($proxFerias) {
                                 </div>
                             </div>
 
-                    <?php
+                            <?php
                         }
                     } else {
                         echo "<p style='text-align: center; color: #a0aec0; font-size: 0.9rem;'>Você ainda não fez nenhuma solicitação.</p>";
@@ -852,13 +877,12 @@ if ($proxFerias) {
         <div class="form-section">
             <form id="solicitacaoForm">
                 <div class="form-row">
-                    <div class="form-group" style="position: relative;">
+                    <div class="form-group" style="position: relative;" onclick="abrirCalendario()">
                         <input type="date" id="data" name="data" class="form-input" required
                             placeholder="Data que você deseja marcar a solicitação"
                             style="padding-left: 50px; padding-right: 10px;">
-
                         <img src="img/calendarioRoxo.png" alt="Abrir calendário" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
-        width: 24px; height: 24px; cursor: pointer;" onclick="focarEForcarData()" />
+    width: 24px; height: 24px; cursor: pointer;" />
                     </div>
 
 
@@ -868,8 +892,9 @@ if ($proxFerias) {
                         <div class="opcao">
                             <div class="dropdown" onclick="toggleDropdown()" role="button" aria-expanded="false">
                                 <div class="dropdown-btn" id="selected-option">
-                                        <span class="itensP"> <img src="img/globo.png" alt=""> Selecione a opção que melhor descreve sua
-                                            solicitação</span>
+                                    <span class="itensP"> <img src="img/globo.png" alt=""> Selecione a opção que melhor
+                                        descreve sua
+                                        solicitação</span>
                                     <span class="setaDrop">▶</span>
 
                                 </div>
@@ -903,7 +928,7 @@ if ($proxFerias) {
     </div>
     <script>
         // SUBSTITUIR o conteúdo do campo oculto com a mensagem do contenteditable
-        document.querySelector('#solicitacaoForm').addEventListener('submit', function(e) {
+        document.querySelector('#solicitacaoForm').addEventListener('submit', function (e) {
             const mensagem = document.getElementById('mensagem').innerText.trim();
             document.getElementById('mensagemOculta').value = mensagem;
         });
@@ -918,7 +943,7 @@ if ($proxFerias) {
 
         const mensagemDiv = document.getElementById('mensagem');
 
-        document.querySelector('#solicitacaoForm').addEventListener('submit', function(e) {
+        document.querySelector('#solicitacaoForm').addEventListener('submit', function (e) {
             const mensagem = mensagemDiv.innerText.trim();
             document.getElementById('mensagemOculta').value = mensagem;
         });
@@ -957,7 +982,7 @@ if ($proxFerias) {
         }
 
         // Fecha dropdown ao clicar fora
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const dropdown = document.querySelector('.dropdown');
             const options = document.getElementById('dropdown-options');
 
@@ -969,15 +994,15 @@ if ($proxFerias) {
 
 
         // Envio do formulário
-        document.getElementById('solicitacaoForm').addEventListener('submit', function(e) {
+        document.getElementById('solicitacaoForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
             const formData = new FormData(this);
 
             fetch('processar.php', {
-                    method: 'POST',
-                    body: formData
-                }).then(resp => resp.json())
+                method: 'POST',
+                body: formData
+            }).then(resp => resp.json())
                 .then(data => {
                     if (data.success) {
                         const historico = document.getElementById('historico');
@@ -1009,7 +1034,7 @@ if ($proxFerias) {
         });
 
         // CALENDÁRIO
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             if (calendarEl) {
                 var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -1034,12 +1059,12 @@ if ($proxFerias) {
                 }
 
                 // Botões de navegação
-                document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function() {
+                document.querySelector('.month-nav .nav-btn:first-child').addEventListener('click', function () {
                     calendar.prev();
                     updateTitle();
                 });
 
-                document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function() {
+                document.querySelector('.month-nav .nav-btn:last-child').addEventListener('click', function () {
                     calendar.next();
                     updateTitle();
                 });
@@ -1054,22 +1079,21 @@ if ($proxFerias) {
         const editableDiv = document.querySelector('#mensagem');
         const hiddenInput = document.querySelector('input[name="mensagem"]');
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             hiddenInput.value = editableDiv.innerHTML;
         });
 
-        function focarEForcarData() {
-            const inputData = document.getElementById('data');
-            inputData.focus();
 
-            // Tenta forçar o calendário abrir
-            if (typeof inputData.showPicker === 'function') {
-                inputData.showPicker();
+        function abrirCalendario() {
+            const input = document.getElementById('data');
+            input.focus();
+            if (typeof input.showPicker === 'function') {
+                input.showPicker();
             } else {
-                // Fallback: abre manualmente um modal ou simplesmente foca no input
-                console.log("showPicker não é suportado neste navegador.");
+                input.click();
             }
         }
+
     </script>
 
 

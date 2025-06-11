@@ -35,7 +35,12 @@ if (isset($_GET['acao'], $_GET['id'])) {
     exit;
 }
 
-$sql = "SELECT id, data_escolhida, mensagem, opcao, status FROM dados ORDER BY id DESC";
+$sql = "SELECT dados.id, dados.data_escolhida, dados.mensagem, dados.opcao, dados.status, 
+               funcionario.nome, funcionario.foto
+        FROM dados 
+        JOIN funcionario ON dados.id_funcionario = funcionario.id
+        ORDER BY dados.id DESC";
+
 $result = $conn->query($sql);
 ?>
 
@@ -421,9 +426,9 @@ $result = $conn->query($sql);
         }
 
         .status-summary img {
-            width: 244px;
-            height: 244px;
-            margin-left: -80px;
+            width: 280px;
+            height: 250px;
+            padding-right: 50px;
             z-index: 1;
         }
 
@@ -721,10 +726,12 @@ $result = $conn->query($sql);
 
                                 echo "<div class='solicitation-card' id='$cardId'>";
                                 echo "<div class='card-header'>";
-                                echo "<div class='employee-avatar'>$initials</div>";
+                                $foto = htmlspecialchars($row['foto'] ?? '');
+                                $nome = htmlspecialchars($row['nome'] ?? 'Funcionário');
+                                echo "<img class='employee-avatar' src='fotos/$foto' alt='Foto de $nome'>";
                                 echo "<div class='divRoxo'></div>";
                                 echo "<div class='employee-info'>";
-                                echo "<div class='employee-name'>Nome Sobrenome</div>";
+                                echo "<div class='employee-name'>$nome</div>";
                                 echo "</div>";
                                 echo "<div class='request-type'>" . htmlspecialchars($row['opcao'] ?? '') . "</div>";
                                 echo "<div class='request-date'>" . htmlspecialchars($row['data_escolhida'] ?? '') . "</div>";
