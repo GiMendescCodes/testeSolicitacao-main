@@ -54,19 +54,17 @@ if ($proxFerias) {
     <style>
         @font-face {
             font-family: 'fonte1';
-            src: url('fontes/euroStyle Normal.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            src: url('../fontes/eurostile.TTF');
         }
 
         @font-face {
             font-family: 'fonte2';
-            src: url('fontes/Montserrat-VariableFont_wght.ttf');
+            src: url('../fontes/Montserrat-VariableFont_wght.ttf');
         }
 
         @font-face {
             font-family: 'fonte3';
-            src: url('fontes/MontserratAlternates-SemiBold.ttf');
+            src: url('../fontes/MontserratAlternates-Regular.ttf');
         }
 
         input[type="date"]::-webkit-calendar-picker-indicator {
@@ -150,7 +148,7 @@ if ($proxFerias) {
             margin-bottom: 4px;
             font-style: normal;
             font-weight: lighter;
-            font-family: 'fonte1', euroStyle;
+            font-family: 'fonte1';
         }
 
         .header-text p {
@@ -268,7 +266,7 @@ if ($proxFerias) {
             width: 100%;
             padding: 16px 0;
             text-align: center;
-            font-family: 'fonte3' sans-serif;
+            font-family: 'fonte3', sans-serif;
         }
 
         .tituloH h2 {

@@ -55,14 +55,14 @@ $result = $conn->query($sql);
     <style>
         @font-face {
             font-family: 'fonte1';
-            src: url('fontes/euroStyle Normal.ttf') format('truetype');
+            src: url('../fontes/euroStyle Normal.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'fonte2';
-            src: url('fontes/Montserrat-VariableFont_wght.ttf');
+            src: url('../fontes/Montserrat-VariableFont_wght.ttf');
         }
 
         .tituloInicial {
@@ -267,7 +267,7 @@ $result = $conn->query($sql);
             margin-bottom: 8px;
             font-family: 'fonte2', sans-serif;
             font-weight: 600;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .card-subtitle {
@@ -405,7 +405,7 @@ $result = $conn->query($sql);
 
         .status-label {
             font-family: 'fonte2', sans-serif;
-            font-weight: lighter;
+            
             color: black;
             font-size: 20px;
             line-height: 1.2;
@@ -616,10 +616,7 @@ $result = $conn->query($sql);
                                             mês, todos os pedidos devem ser realizados com, no mínimo, 30 dias de
                                             antecedência. Além disso, está disponível a opção de divisão das férias em
                                             até
-                                            três períodos, sendo que nenhum deles pode ser inferior a 5 dias. Para mais
-                                            informações, consulte o manual do colaborador ou entre em contato com o
-                                            setor de
-                                            RH.
+                                            três períodos, sendo que nenhum deles pode ser inferior a 5 dias.
                                         </div>
                                     </div>
                                 </div>
@@ -656,10 +653,7 @@ $result = $conn->query($sql);
                                             do prazo estabelecido. Para isso, reforçamos a importância de revisar os
                                             pedidos
                                             com agilidade e precisão, garantindo que nossa análise seja feita dentro do
-                                            prazo de até 48 horas após o recebimento. Contamos com o apoio e a dedicação
-                                            de
-                                            toda a equipe para atingir essa meta e melhorar ainda mais nossos processos
-                                            internos!
+                                            prazo de até 48 horas após o recebimento.
                                         </div>
                                     </div>
                                 </div>
@@ -679,9 +673,7 @@ $result = $conn->query($sql);
                                             serão: liderança, gestão de tempo, comunicação eficaz e planejamento
                                             estratégico. As inscrições podem ser realizadas diretamente no portal
                                             interno
-                                            até o dia 18 de maio. Não perca essa oportunidade de aprimorar suas
-                                            habilidades
-                                            e expandir seus conhecimentos!
+                                            até o dia 18 de maio.
                                         </div>
                                     </div>
                                 </div>
