@@ -61,8 +61,8 @@ $result = $conn->query($sql);
         }
 
         .tituloInicial {
-            margin-left: 65px;
-            margin-bottom: 15px;
+            margin-bottom: 30px;
+            margin-top: 15px;
         }
 
         .titulo {
@@ -80,7 +80,7 @@ $result = $conn->query($sql);
         }
 
         .tudo {
-            padding: 20px;
+            margin-left: 200px;
             width: 1200px;
             display: flex;
             flex-direction: row;
@@ -130,7 +130,7 @@ $result = $conn->query($sql);
         }
 
         .icon.people {
-            mask: url('./img/people.png') no-repeat center;
+            mask: url('./img/ph_person-thin.png') no-repeat center;
         }
 
         .icon.docs {
@@ -222,12 +222,13 @@ $result = $conn->query($sql);
 
         .carousel-wrapper {
             display: flex;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s ease-in-out;
         }
 
         .carousel-container {
             overflow: hidden;
             width: 710px;
+            border-radius: 20px;
             border-radius: 20px;
             box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
             -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
@@ -243,21 +244,12 @@ $result = $conn->query($sql);
             display: flex;
             align-items: center;
             gap: 50px;
-            width: 700px;
             flex-shrink: 0;
-
         }
 
-        .card-illustration {
-            width: 300px;
-            height: 250px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
+        .card-illustration img {
+            width: 205px;
+            height: 210px;
         }
 
         .card-content {
@@ -266,21 +258,31 @@ $result = $conn->query($sql);
 
         .card-title {
             font-size: 20px;
-            color: #667eea;
+            color: #9998FF;
             margin-bottom: 8px;
+            font-family: 'fonte2', sans-serif;
+            font-weight: 600;
+            margin-top: 15px;
         }
 
         .card-subtitle {
             font-size: 15px;
-            color: #333;
+            color: black;
             margin-bottom: 20px;
+            font-family: 'fonte2', sans-serif;
+            margin-left: 50px;
+            font-weight: bold;
+            margin-top: -5px;
         }
 
         .card-text {
             font-size: 13px;
-            color: #666;
+            color: black;
             line-height: 1.6;
             margin-bottom: 25px;
+            font-family: 'fonte2', sans-serif;
+            font-style: normal;
+            font-weight: normal;
         }
 
         .card-dots {
@@ -289,12 +291,10 @@ $result = $conn->query($sql);
             align-items: center;
             gap: 8px;
             background-color: white;
-            /* ou testando com uma cor bem visível, tipo red */
             padding: 10px 16px;
             margin-top: -15px;
             border-radius: 0 0 30px 30px;
             height: auto;
-            /* ou um valor fixo se preferir */
             position: absolute;
         }
 
@@ -319,7 +319,7 @@ $result = $conn->query($sql);
             border: none;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
+            border-radius: 30px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             display: flex;
@@ -354,67 +354,77 @@ $result = $conn->query($sql);
         }
 
 
-
-        .content-area {
-            margin-left: 100px;
-        }
-
-        .panel-content {
-            padding: 40px;
-        }
-
         .parte1 {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            margin-left: 75px;
 
         }
 
         .status-summary {
             background: white;
-            border-radius: 15px;
+            border-radius: 30px;
             padding: 20px;
-            text-align: center;
             width: 400px;
             height: 250px;
             display: flex;
             flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
             margin-left: 45px;
             box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
-            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
-            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+        }
+
+        .status-left {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 10px;
+            max-width: 50%;
+            margin-top: -120px;
+        }
+
+        .status-number {
+            font-size: 20px;
+            color: white;
+            background-color: #9998FF;
+            height: 28px;
+            width: 38px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-weight: lighter;
+        }
+
+        .status-label {
+            font-family: 'fonte2', sans-serif;
+            font-weight: lighter;
+            color: black;
+            font-size: 20px;
+            line-height: 1.2;
+            z-index: 2;
+        }
+
+        .analise {
+            margin-left: -40px;
         }
 
         .pendentes {
-            background-color: rgba(153, 152, 255, 0.5);
-            color: black;
-
+            background: none;
+            display: inline;
+            box-shadow: inset 0 -14px rgba(153, 152, 255, 0.5);
+            /* ajusta a altura aqui */
+            padding: 0;
+            margin-left: -40px;
         }
 
         .status-summary img {
             width: 244px;
             height: 244px;
-        }
-
-        .status-number {
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 5px;
-            background-color: #9998FF;
-            height: 28px;
-            width: 38px;
-            border-radius: 70px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .status-label {
-            font-family: 'fonte2', Montserrat, sans-serif;
-            color: black;
-            font-size: 20px;
+            margin-left: -80px;
+            z-index: 1;
         }
 
         .solicitation-card {
@@ -424,7 +434,10 @@ $result = $conn->query($sql);
             padding: 30px;
             margin-bottom: 20px;
             position: relative;
-            width: 1160px;
+            width: 1170px;
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
         }
 
         .card-header {
@@ -432,6 +445,15 @@ $result = $conn->query($sql);
             align-items: center;
             gap: 15px;
             margin-bottom: 20px;
+        }
+
+        .divRoxo {
+            background-color: #9998FF;
+            height: 22px;
+            width: 15px;
+            position: relative;
+            margin-left: -20px;
+            margin-right: -20px;
         }
 
         .employee-avatar {
@@ -447,39 +469,50 @@ $result = $conn->query($sql);
         }
 
         .employee-name {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 15px;
             color: white;
             background-color: #9998FF;
-            border-radius: 0 30px 30px 0;
+            border-radius: 30px;
+            font-family: 'fonte2', sans-serif;
+            font-style: normal;
+            width: 230px;
+            height: 35px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            text-size-adjust: initial;
         }
 
         .request-type,
         .request-date {
             padding: 6px 12px;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
         }
 
         .request-type {
             background: #9998FF;
             color: white;
+            font-family: 'fonte2', sans-serif;
+            font-style: normal;
         }
 
         .request-date {
             background-color: #9998FF;
             color: white;
+            font-family: 'fonte2', sans-serif;
+            font-style: normal;
         }
 
         .card-content-text {
             background: #9998FF;
-            border-radius: 12px;
+            border-radius: 30px;
             padding: 20px;
             margin-bottom: 25px;
             font-size: 14px;
             line-height: 1.6;
             color: white;
+            font-family: 'fonte2', sans-serif;
+            font-style: normal;
         }
 
         .card-actions {
@@ -501,17 +534,33 @@ $result = $conn->query($sql);
         .btn-approve {
             background: #6E6DFF;
             color: white;
-            box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
-            -webkit-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
-            -moz-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
         }
 
         .btn-deny {
             background: #6E6DFF;
             color: white;
-            box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
-            -webkit-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
-            -moz-box-shadow: 18px 16px 15px -7px rgba(110, 109, 255, 0.54);
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+        }
+
+        .btn-approve:hover {
+            background-color: white;
+            color: #9998FF;
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+        }
+
+        .btn-deny:hover {
+            background-color: white;
+            color: #9998FF;
+            box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -webkit-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
+            -moz-box-shadow: 2px 5px 19px -1px rgba(153, 152, 255, 0.7);
         }
 
         .no-requests {
@@ -529,14 +578,11 @@ $result = $conn->query($sql);
         <img class="logo" src="./img/augebit.png" alt="">
         <div class="sidebar">
             <a href="" class="menu-item"><span class="icon home"></span></a>
-            <div class="icon-circle"><img src="img/person.png" alt=""></div>
+            <a href="" class="menu-item"><span class="icon people"></span></a>
             <a href="" class="menu-item"><span class="icon docs"></span></a>
             <a href="" class="Home icon"><span class="icon heat"></span></a>
             <a href="" class="menu-item"><span class="icon grafico"></span></a>
-            <a href="" class="calendario-item"><span class="icon calendario"></span></a>
-        </div>
-        <div class="perfil">
-            <a class="person" href=""></a>
+            <a href="" class="icon-circle"> <img src="img/calendarioBranco.png" alt=""> </a>
         </div>
     </div>
     </div>
@@ -649,11 +695,18 @@ $result = $conn->query($sql);
                     $pendingCount = $countResult ? $countResult->fetch_assoc()['total'] : 0;
                     ?>
                     <div class="status-summary">
-                        <div class="status-number"><?php echo $pendingCount; ?></div>
-                        <div class="status-label">solicitações<br><span class="pendentes">pendentes</span> de análise
+                        <div class="status-left">
+                            <div class="status-number">
+                                <?php echo sprintf('%02d', $pendingCount); ?>
+                            </div>
+                            <div class="status-label">
+                                solicitações<br><span class="pendentes">pendentes</span> de <span
+                                    class="analise">análise</span>
+                            </div>
                         </div>
                         <img src="img/numero.png" alt="">
                     </div>
+
                 </div>
 
                 <!-- Painel Principal -->
@@ -669,6 +722,7 @@ $result = $conn->query($sql);
                                 echo "<div class='solicitation-card' id='$cardId'>";
                                 echo "<div class='card-header'>";
                                 echo "<div class='employee-avatar'>$initials</div>";
+                                echo "<div class='divRoxo'></div>";
                                 echo "<div class='employee-info'>";
                                 echo "<div class='employee-name'>Nome Sobrenome</div>";
                                 echo "</div>";
@@ -712,7 +766,7 @@ $result = $conn->query($sql);
         const totalSlides = 4;
 
         function updateCarousel() {
-            const slideWidth = 700; // largura fixa
+            const slideWidth = 710; // largura fixa
             const carousel = document.getElementById('carousel');
 
             const offset = currentSlide * slideWidth;
