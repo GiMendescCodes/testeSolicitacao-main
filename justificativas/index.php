@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $arquivo = $destino; // caminho do arquivo salvo
             }
         }
-        
+
         if (!$mensagemErro) {
             $stmt = $conn->prepare("INSERT INTO justificativas (data_escolhida, mensagem, opcao, status, arquivo) VALUES (?, ?, ?, 'pendente', ?)");
             $stmt->bind_param("ssss", $data_escolhida, $mensagem, $opcao, $arquivo);
@@ -51,12 +51,13 @@ $result = $conn->query($sql);
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justificativas</title>
     <style>
-                .fixo {
+        .fixo {
             position: fixed;
             left: 20px;
             top: 20px;
@@ -64,7 +65,8 @@ $result = $conn->query($sql);
             flex-direction: column;
             align-items: center;
         }
-             .perfil {
+
+        .perfil {
             background-image: url(./img/bola.png);
             display: flex;
             align-items: center;
@@ -126,6 +128,62 @@ $result = $conn->query($sql);
             color: #718096;
             font-size: 16px;
         }
+
+        .icon.home {
+            mask: url('./img/home.png') no-repeat center;
+        }
+
+        .icon.notebook {
+            mask: url('./img/justificativas.png') no-repeat center;
+        }
+
+        .icon.cap {
+            mask: url('./img/cursos.png') no-repeat center;
+        }
+
+        .icon.chart {
+            mask: url('./img/desempenho.png') no-repeat center;
+        }
+
+        .icon.phone {
+            mask: url('./img/solicitacoes.png') no-repeat center;
+        }
+
+        .icon-circle {
+            width: 55px;
+            height: 80px;
+            background-color: #4d47c3;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .icon-circle img {
+            width: 30px;
+            height: 30px;
+        }
+                .menu-item {
+            width: 50px;
+            height: 50px;
+            margin: 25px 0;
+            background: none;
+            border: none;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .menu-item .icon {
+            width: 100%;
+            height: 100%;
+            display: block;
+            mask-size: cover;
+            -webkit-mask-size: cover;
+            background-color: white;
+        }
         .sidebar {
             width: 70px;
             background-color: #6c63ff;
@@ -135,6 +193,7 @@ $result = $conn->query($sql);
             align-items: center;
             border-radius: 40px;
         }
+
         * {
             margin: 0;
             padding: 0;
@@ -157,37 +216,6 @@ $result = $conn->query($sql);
             height: calc(100vh - 40px);
         }
 
-        .sidebar {
-            background: rgba(102, 126, 234, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .logo::before {
-            content: '';
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            transform: rotate(45deg);
-        }
 
         .nav-icon {
             width: 50px;
@@ -201,7 +229,8 @@ $result = $conn->query($sql);
             color: rgba(255, 255, 255, 0.7);
         }
 
-        .nav-icon:hover, .nav-icon.active {
+        .nav-icon:hover,
+        .nav-icon.active {
             background: rgba(255, 255, 255, 0.2);
             color: white;
         }
@@ -511,143 +540,148 @@ $result = $conn->query($sql);
             .container {
                 grid-template-columns: 1fr;
             }
-            
-            .sidebar {
-                flex-direction: row;
-                justify-content: center;
-                padding: 15px;
-            }
-            
+
             .form-row {
                 flex-direction: column;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-    <div class="fixo">
-        <img class="logo" src="./img/augebit.png" alt="">
-        <div class="sidebar">
-            <a href="" class="menu-item">
-                <span class="icon home"></span>
-            </a>
-            <a href="notebook.html" class="menu-item">
-                <span class="icon notebook"></span>
-            </a>
-            <a href="cap.html" class="menu-item">
-                <span class="icon cap"></span>
-            </a>
-            <a href="chart.html" class="menu-item">
-                <span class="icon chart"></span>
-            </a>
-            <div class="icon-circle">
-                <img src="img/calendarioBranco.png" alt="">
+        <div class="fixo">
+            <img class="logo" src="./img/augebit.png" alt="">
+            <div class="sidebar">
+                <a href="" class="menu-item">
+                    <span class="icon home"></span>
+                </a>
+                <div class="icon-circle">
+                    <img src="img/papelbranco.png" alt="">
+                </div>
+                <a href="cap.html" class="menu-item">
+                    <span class="icon cap"></span>
+                </a>
+                <a href="chart.html" class="menu-item">
+                    <span class="icon chart"></span>
+                </a>
+                <a href="phone.html" class="menu-item">
+                    <span class="icon phone"></span>
+                </a>
+            </div>
+            <div class="perfil">
+                <a class="person" href=""></a>
             </div>
         </div>
-        <div class="perfil">
-            <a class="person" href=""></a>
-        </div>
-    </div>
         <div class="tudo">
-        <div class="main-content">
-            <div class="left-section">
-                <div class="header">
-                    <h1>Olá, Giovanna!</h1>
-                    <p>Acompanhe suas justificativas</p>
-                </div>
+            <div class="main-content">
+                <div class="left-section">
+                    <div class="header">
+                        <h1>Olá, Giovanna!</h1>
+                        <p>Acompanhe suas justificativas</p>
+                    </div>
 
-                <div class="history-card">
-                    <h3 class="history-title">Histórico de justificativas</h3>
-                    
-                    <?php
-                    if ($result && $result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
-                            $statusClass = match($row['status']) {
-                                'aceito' => 'status-aceito',
-                                'pendente' => 'status-pendente',
-                                'negado' => 'status-negado',
-                                default => 'status-pendente'
-                            };
-                            
-                            $statusIcon = match($row['status']) {
-                                'aceito' => '✓',
-                                'pendente' => '◯',
-                                'negado' => '✕',
-                                default => '◯'
-                            };
-                            
-                            $data_formatada = date('d/m', strtotime($row['data_escolhida']));
-                            
-                            echo "<div class='history-item'>
+                    <div class="history-card">
+                        <h3 class="history-title">Histórico de justificativas</h3>
+
+                        <?php
+                        if ($result && $result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $statusClass = match ($row['status']) {
+                                    'aceito' => 'status-aceito',
+                                    'pendente' => 'status-pendente',
+                                    'negado' => 'status-negado',
+                                    default => 'status-pendente'
+                                };
+
+                                $statusIcon = match ($row['status']) {
+                                    'aceito' => '✓',
+                                    'pendente' => '◯',
+                                    'negado' => '✕',
+                                    default => '◯'
+                                };
+
+                                $data_formatada = date('d/m', strtotime($row['data_escolhida']));
+
+                                echo "<div class='history-item'>
                                     <div class='history-date'>{$data_formatada}</div>
-                                    <div class='history-reason'>".htmlspecialchars($row['opcao'])."</div>
+                                    <div class='history-reason'>" . htmlspecialchars($row['opcao']) . "</div>
                                     <div class='status-icon {$statusClass}'>{$statusIcon}</div>
                                   </div>";
+                            }
+                        } else {
+                            echo "<p style='color: #666; text-align: center; padding: 40px 0;'>Você ainda não fez nenhuma justificativa.</p>";
                         }
-                    } else {
-                        echo "<p style='color: #666; text-align: center; padding: 40px 0;'>Você ainda não fez nenhuma justificativa.</p>";
-                    }
-                    ?>
-                </div>
-            </div>
-
-            <div class="right-section">
-                <div class="quote-card">
-                    <div class="quote-illustration"></div>
-                    <p class="quote-text">
-                        A verdadeira excelência está em reconhecer nossos erros, corrigi-los com determinação e seguir em frente com ainda mais força. Cada presença conta para o nosso sucesso coletivo!
-                    </p>
+                        ?>
+                    </div>
                 </div>
 
-                <div class="form-card">
-                    <?php if($mensagemErro): ?>
-                        <div class="error"><?php echo htmlspecialchars($mensagemErro); ?></div>
-                    <?php endif; ?>
+                <div class="right-section">
+                    <div class="quote-card">
+                        <div class="quote-illustration"></div>
+                        <p class="quote-text">
+                            A verdadeira excelência está em reconhecer nossos erros, corrigi-los com determinação e
+                            seguir em frente com ainda mais força. Cada presença conta para o nosso sucesso coletivo!
+                        </p>
+                    </div>
 
-                    <form method="post" action="" enctype="multipart/form-data">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="date" name="data_escolhida" class="form-input" placeholder="Data da falta" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <div class="dropdown" onclick="toggleDropdown()">
-                                    <div class="dropdown-btn" id="selected-option">
-                                        <span>Selecione a opção que melhor descreve sua justificativa</span>
-                                        <span>→</span>
+                    <div class="form-card">
+                        <?php if ($mensagemErro): ?>
+                            <div class="error"><?php echo htmlspecialchars($mensagemErro); ?></div>
+                        <?php endif; ?>
+
+                        <form method="post" action="" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="date" name="data_escolhida" class="form-input"
+                                        placeholder="Data da falta" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="dropdown" onclick="toggleDropdown()">
+                                        <div class="dropdown-btn" id="selected-option">
+                                            <span>Selecione a opção que melhor descreve sua justificativa</span>
+                                            <span>→</span>
+                                        </div>
+                                        <div class="dropdown-options" id="dropdown-options" style="display: none;">
+                                            <div class="dropdown-option" onclick="selecionarOpcao('Motivo pessoal')">
+                                                Motivo pessoal</div>
+                                            <div class="dropdown-option"
+                                                onclick="selecionarOpcao('Emergência familiar')">Emergência familiar
+                                            </div>
+                                            <div class="dropdown-option"
+                                                onclick="selecionarOpcao('Consulta médica (com atestado)')">Consulta
+                                                médica (com atestado)</div>
+                                            <div class="dropdown-option"
+                                                onclick="selecionarOpcao('Consulta médica (sem atestado)')">Consulta
+                                                médica (sem atestado)</div>
+                                            <div class="dropdown-option" onclick="selecionarOpcao('Outro')">Outro</div>
+                                        </div>
                                     </div>
-                                    <div class="dropdown-options" id="dropdown-options" style="display: none;">
-                                        <div class="dropdown-option" onclick="selecionarOpcao('Motivo pessoal')">Motivo pessoal</div>
-                                        <div class="dropdown-option" onclick="selecionarOpcao('Emergência familiar')">Emergência familiar</div>
-                                        <div class="dropdown-option" onclick="selecionarOpcao('Consulta médica (com atestado)')">Consulta médica (com atestado)</div>
-                                        <div class="dropdown-option" onclick="selecionarOpcao('Consulta médica (sem atestado)')">Consulta médica (sem atestado)</div>
-                                        <div class="dropdown-option" onclick="selecionarOpcao('Outro')">Outro</div>
+                                    <input type="hidden" name="opcao" id="opcao-selecionada" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="file-input-wrapper">
+                                        <input type="file" name="arquivo" id="arquivo" class="file-input">
+                                        <label for="arquivo" class="file-input-label">
+                                            <span>📎</span>
+                                            <span>Anexe um arquivo, se necessário</span>
+                                        </label>
                                     </div>
                                 </div>
-                                <input type="hidden" name="opcao" id="opcao-selecionada" required>
                             </div>
-                            
+
                             <div class="form-group">
-                                <div class="file-input-wrapper">
-                                    <input type="file" name="arquivo" id="arquivo" class="file-input">
-                                    <label for="arquivo" class="file-input-label">
-                                        <span>📎</span>
-                                        <span>Anexe um arquivo, se necessário</span>
-                                    </label>
-                                </div>
+                                <textarea name="mensagem" class="form-input textarea"
+                                    placeholder="Explique sua solicitação" required></textarea>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <textarea name="mensagem" class="form-input textarea" placeholder="Explique sua solicitação" required></textarea>
-                        </div>
-
-                        <button type="submit" class="submit-btn">ENVIAR</button>
-                    </form>
+                            <button type="submit" class="submit-btn">ENVIAR</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 
@@ -665,7 +699,7 @@ $result = $conn->query($sql);
         }
 
         // Fechar dropdown ao clicar fora
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const dropdown = document.querySelector('.dropdown');
             if (!dropdown.contains(event.target)) {
                 document.getElementById('dropdown-options').style.display = 'none';
@@ -673,7 +707,7 @@ $result = $conn->query($sql);
         });
 
         // Atualizar label do arquivo quando selecionado
-        document.getElementById('arquivo').addEventListener('change', function(e) {
+        document.getElementById('arquivo').addEventListener('change', function (e) {
             const label = document.querySelector('.file-input-label span:last-child');
             if (e.target.files.length > 0) {
                 label.textContent = e.target.files[0].name;
@@ -683,4 +717,5 @@ $result = $conn->query($sql);
         });
     </script>
 </body>
+
 </html>

@@ -573,23 +573,23 @@ if ($proxFerias) {
         }
 
         .icon.home {
-            mask: url('./img/home.png') no-repeat center;
+            mask: url('/img/home.png') no-repeat center;
         }
 
         .icon.notebook {
-            mask: url('./img/justificativas.png') no-repeat center;
+            mask: url('/img/justificativas.png') no-repeat center;
         }
 
         .icon.cap {
-            mask: url('./img/cursos.png') no-repeat center;
+            mask: url('/img/cursos.png') no-repeat center;
         }
 
         .icon.chart {
-            mask: url('./img/desempenho.png') no-repeat center;
+            mask: url('/img/desempenho.png') no-repeat center;
         }
 
         .icon.phone {
-            mask: url('./img/solicitacoes.png') no-repeat center;
+            mask: url('/img/solicitacoes.png') no-repeat center;
         }
 
         .icon-circle {
