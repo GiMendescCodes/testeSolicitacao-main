@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$sql = "SELECT id, data_escolhida, opcao, mensagem, status, arquivo FROM justificativas ORDER BY id DESC LIMIT 6";
+$sql = "SELECT id, data_escolhida, opcao, mensagem, status, arquivo FROM justificativas ORDER BY id DESC LIMIT 4";
 $result = $conn->query($sql);
 ?>
 
@@ -57,6 +57,21 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justificativas</title>
     <style>
+        @font-face {
+            font-family: 'fonte1';
+            src: url('../fontes/eurostile.TTF');
+        }
+
+        @font-face {
+            font-family: 'fonte2';
+            src: url('../fontes/Montserrat-VariableFont_wght.ttf');
+        }
+
+        @font-face {
+            font-family: 'fonte3';
+            src: url('../fontes/MontserratAlternates-Regular.ttf');
+        }
+
         .fixo {
             position: fixed;
             left: 20px;
@@ -165,7 +180,8 @@ $result = $conn->query($sql);
             width: 30px;
             height: 30px;
         }
-                .menu-item {
+
+        .menu-item {
             width: 50px;
             height: 50px;
             margin: 25px 0;
@@ -184,6 +200,7 @@ $result = $conn->query($sql);
             -webkit-mask-size: cover;
             background-color: white;
         }
+
         .sidebar {
             width: 70px;
             background-color: #6c63ff;
@@ -251,17 +268,26 @@ $result = $conn->query($sql);
         .header {
             color: white;
             margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
         }
 
         .header h1 {
             font-size: 2.5rem;
-            font-weight: 600;
+            font-weight: lighter;
             margin-bottom: 5px;
+            font-family: 'fonte1', sans-serif;
+            color: black;
         }
 
         .header p {
             font-size: 1.1rem;
             opacity: 0.9;
+            font-family: 'fonte2' sans-serif;
+            color: black;
+            margin-top: -15px;
         }
 
         .history-card {
@@ -281,12 +307,38 @@ $result = $conn->query($sql);
             margin-bottom: 25px;
         }
 
+        .history-section {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            border: 2px solid #9998FF;
+            height: 368px;
+            width: 515px;
+        }
+
+        .tituloH {
+            background-color: #9998FF;
+            width: 100%;
+            padding: 16px 0;
+            text-align: center;
+            font-family: 'fonte3', sans-serif;
+        }
+
+        .tituloH h2 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
         .history-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 12px 20px;
+            font-family: 'fonte2', sans-serif;
+            border-bottom: 1px solid #9998FF;
         }
 
         .history-item:last-child {
@@ -294,21 +346,25 @@ $result = $conn->query($sql);
         }
 
         .history-date {
-            color: #667eea;
-            font-weight: 500;
-            font-size: 0.9rem;
-            min-width: 60px;
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 50px;
+            font-family: 'fonte2', sans-serif;
         }
 
-        .history-reason {
-            color: #333;
+        .history-content {
             flex: 1;
-            margin: 0 15px;
+            /* ocupa o espaço disponível */
+            text-align: left;
+            /* garante alinhamento à esquerda */
+        }
+
+        .history-content p {
+            margin: 0;
         }
 
         .status-icon {
-            width: 35px;
-            height: 35px;
+
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -317,19 +373,9 @@ $result = $conn->query($sql);
             font-size: 18px;
         }
 
-        .status-aceito {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .status-pendente {
-            background: #FF9800;
-            color: white;
-        }
-
-        .status-negado {
-            background: #f44336;
-            color: white;
+        .status-icon img {
+            width: 45px;
+            height: 45px;
         }
 
         .right-section {
@@ -339,47 +385,45 @@ $result = $conn->query($sql);
         }
 
         .quote-card {
+            display: flex;
+            flex-direction: row;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border-radius: 25px;
+            border-radius: 60px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
             position: relative;
             overflow: hidden;
+            width: 630px;
+            height: 365px;
+            margin-left: 15px;
         }
 
         .quote-illustration {
-            width: 200px;
-            height: 120px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 295px;
+            height: 295px;
             border-radius: 15px;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
 
-        .quote-illustration::before {
-            content: '👥';
-            position: absolute;
-            font-size: 3rem;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
 
         .quote-text {
-            color: #667eea;
+            color: #9998FF;
             line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: 20px;
+            width: 242px;
+            font-family: 'fonte3', sans-serif;
         }
 
         .form-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             backdrop-filter: blur(20px);
             border-radius: 25px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             flex: 1;
+            box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
         }
 
         .form-row {
@@ -395,7 +439,7 @@ $result = $conn->query($sql);
         .form-input {
             width: 100%;
             padding: 15px 20px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
+            border: 2px solid #9998FF;
             border-radius: 15px;
             font-size: 1rem;
             transition: all 0.3s ease;
@@ -404,7 +448,7 @@ $result = $conn->query($sql);
 
         .form-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #9998FF;
             background: white;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
@@ -422,7 +466,7 @@ $result = $conn->query($sql);
         .dropdown-btn {
             width: 100%;
             padding: 15px 20px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
+            border: 2px solid #9998FF;
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.8);
             cursor: pointer;
@@ -430,11 +474,11 @@ $result = $conn->query($sql);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #667eea;
+            color: #9998FF;
         }
 
         .dropdown-btn:hover {
-            border-color: #667eea;
+            border-color: #9998FF;
             background: white;
         }
 
@@ -483,11 +527,11 @@ $result = $conn->query($sql);
             align-items: center;
             gap: 10px;
             padding: 15px 20px;
-            border: 2px dashed rgba(102, 126, 234, 0.3);
+            border: 2px solid #9998FF;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: #667eea;
+            color: #9998FF;
             background: rgba(255, 255, 255, 0.5);
         }
 
@@ -503,7 +547,7 @@ $result = $conn->query($sql);
         }
 
         .submit-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #9998FF;
             color: white;
             border: none;
             padding: 15px 40px;
@@ -545,6 +589,11 @@ $result = $conn->query($sql);
                 flex-direction: column;
             }
         }
+
+        .ladoalado {
+            display: flex;
+            flex-direction: row;
+        }
     </style>
 </head>
 
@@ -580,49 +629,61 @@ $result = $conn->query($sql);
                         <h1>Olá, Giovanna!</h1>
                         <p>Acompanhe suas justificativas</p>
                     </div>
+                    <div class="ladoalado">
+                        <div class="history-section">
+                            <div class="tituloH">
+                                <h2>Histórico de solicitações</h2>
+                            </div>
+                            <div id="historico">
+                                <?php
+                                if ($result && $result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $statusClass = 'status-' . $row['status'];
+                                        $statusIcon = match ($row['status']) {
+                                            'pendente' => '<img src="img/pendente.png" alt="">',
+                                            'aceito' => '<img src="img/aprovado.png" alt="">',
+                                            'negado' => '<img src="img/negado.png" alt="">',
+                                            default => '<img src="img/pendente.png" alt="">',
+                                        };
 
-                    <div class="history-card">
-                        <h3 class="history-title">Histórico de justificativas</h3>
+                                        $date = new DateTime($row['data_escolhida']);
+                                        $formattedDate = $date->format('d/m');
+                                        ?>
 
-                        <?php
-                        if ($result && $result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $statusClass = match ($row['status']) {
-                                    'aceito' => 'status-aceito',
-                                    'pendente' => 'status-pendente',
-                                    'negado' => 'status-negado',
-                                    default => 'status-pendente'
-                                };
+                                        <div class="history-item" data-id="<?php echo $row['id']; ?>">
+                                            <div class="history-date"><?php echo $formattedDate; ?></div>
+                                            <div class="history-content">
+                                                <?php
+                                                $opcao = htmlspecialchars($row['opcao'] ?? 'Nenhuma opção');
+                                                echo "<p>Justificou uma falta/atraso por <strong>$opcao</strong></p>";
+                                                ?>
+                                            </div>
 
-                                $statusIcon = match ($row['status']) {
-                                    'aceito' => '✓',
-                                    'pendente' => '◯',
-                                    'negado' => '✕',
-                                    default => '◯'
-                                };
+                                            <div class="status-icon <?php echo $statusClass; ?>">
+                                                <?php echo $statusIcon; ?>
+                                            </div>
+                                        </div>
 
-                                $data_formatada = date('d/m', strtotime($row['data_escolhida']));
+                                        <?php
+                                    }
+                                } else {
+                                    echo "<p style='text-align: center; color: #a0aec0; font-size: 0.9rem;'>Você ainda não fez nenhuma solicitação.</p>";
+                                }
+                                ?>
+                            </div>
+                        </div>
 
-                                echo "<div class='history-item'>
-                                    <div class='history-date'>{$data_formatada}</div>
-                                    <div class='history-reason'>" . htmlspecialchars($row['opcao']) . "</div>
-                                    <div class='status-icon {$statusClass}'>{$statusIcon}</div>
-                                  </div>";
-                            }
-                        } else {
-                            echo "<p style='color: #666; text-align: center; padding: 40px 0;'>Você ainda não fez nenhuma justificativa.</p>";
-                        }
-                        ?>
-                    </div>
-                </div>
-
-                <div class="right-section">
-                    <div class="quote-card">
-                        <div class="quote-illustration"></div>
-                        <p class="quote-text">
-                            A verdadeira excelência está em reconhecer nossos erros, corrigi-los com determinação e
-                            seguir em frente com ainda mais força. Cada presença conta para o nosso sucesso coletivo!
-                        </p>
+                        <div class="right-section">
+                            <div class="quote-card">
+                                <div class="quote-illustration"><img src="img/quote.png" alt=""></div>
+                                <p class="quote-text">
+                                    A verdadeira excelência está em reconhecer nossos erros, corrigi-los com
+                                    determinação e
+                                    seguir em frente com ainda mais força. Cada presença conta para o nosso sucesso
+                                    coletivo!
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-card">
@@ -655,7 +716,8 @@ $result = $conn->query($sql);
                                             <div class="dropdown-option"
                                                 onclick="selecionarOpcao('Consulta médica (sem atestado)')">Consulta
                                                 médica (sem atestado)</div>
-                                            <div class="dropdown-option" onclick="selecionarOpcao('Outro')">Outro</div>
+                                            <div class="dropdown-option" onclick="selecionarOpcao('Outro')">Outro
+                                            </div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="opcao" id="opcao-selecionada" required>

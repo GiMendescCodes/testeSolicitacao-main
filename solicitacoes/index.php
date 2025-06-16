@@ -390,6 +390,7 @@ if ($proxFerias) {
             color: #a3a3c2;
             transition: border-color 0.3s, box-shadow 0.3s;
             resize: none;
+            align-items: center;
             /* Evita distorção */
         }
 
