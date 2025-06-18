@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Desempenho Profissional</title>
     <style>
+         @font-face {
+            font-family: 'fonte1';
+            src: url('../fontes/eurostile.TTF');
+        }
+
+        @font-face {
+            font-family: 'fonte2';
+            src: url('../fontes/Montserrat-VariableFont_wght.ttf');
+        }
+
+        @font-face {
+            font-family: 'fonte3';
+            src: url('../fontes/MontserratAlternates-Regular.ttf');
+        }
         * {
             margin: 0;
             padding: 0;
@@ -51,7 +65,7 @@
         }
 
         .icon.people {
-            mask: url('./img/people.png') no-repeat center;
+            mask: url('./img/pessoinha.png') no-repeat center;
         }
 
         .icon.docs {
@@ -163,7 +177,12 @@
             color: #2c3e50;
             font-weight: 600;
         }
-
+        .form-group img,
+        .form-group img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: -8px;
+        }
         .form-group input,
         .form-group select {
             width: 100%;
@@ -336,7 +355,7 @@
         }
 
         .performance-table th {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: #9998FF;
             color: white;
             padding: 15px;
             text-align: left;
@@ -374,15 +393,15 @@
         }
 
         .score-fill.yellow {
-            background: #f7dc6f;
+            background: #FED54D;
         }
 
         .score-fill.blue {
-            background: #5dade2;
+            background: #6E6DFF;
         }
 
         .score-fill.green {
-            background: #58d68d;
+            background: #55D49D;
         }
 
         .score-value {
@@ -411,10 +430,11 @@
         }
 
         .chart-container {
-            background: rgba(102, 126, 234, 0.05);
+            background: #9998FF;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 25px;
+
         }
 
         .chart-title {
@@ -500,16 +520,16 @@
         }
 
         .motivation-card {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: white;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 0 10px rgba(136, 92, 255, 0.3);
         }
 
         .motivation-card::before {
-            content: '💡';
             font-size: 40px;
             position: absolute;
             top: 15px;
@@ -518,7 +538,7 @@
         }
 
         .motivation-text {
-            color: #2c3e50;
+            color: #6E6DFF;
             font-size: 14px;
             line-height: 1.6;
             font-style: italic;
@@ -566,11 +586,11 @@
             <form id="evaluationForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label><img src="img/personRoxo" alt="">Digite o nome do funcionário aqui...</label>
+                        <label><img src="\testeSolicitacao-main\desempenho\img\personRoxo.png" alt="">Digite o nome do funcionário aqui...</label>
                         <input type="text" id="employeeName" placeholder="Nome do funcionário" required>
                     </div>
                     <div class="form-group">
-                        <label><img src="img/calendarioRoxo" alt="">Digite o mês de avaliação aqui...</label>
+                        <label><img src="\testeSolicitacao-main\desempenho\img\calendarioRoxo.png" alt="">Digite o mês de avaliação aqui...</label>
                         <input type="month" id="evaluationMonth" required>
                     </div>
                 </div>
@@ -595,7 +615,7 @@
                                         data-criteria="pontualidade" required></td>
                                 <td class="result-cell" data-criteria="pontualidade">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="pontualidade"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr>
                                 <td class="criteria-name">Cumprimento de prazos</td>
@@ -605,7 +625,7 @@
                                         data-criteria="prazos" required></td>
                                 <td class="result-cell" data-criteria="prazos">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="prazos"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr>
                                 <td class="criteria-name">Qualidade do trabalho entregue</td>
@@ -615,7 +635,7 @@
                                         data-criteria="qualidade" required></td>
                                 <td class="result-cell" data-criteria="qualidade">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="qualidade"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr>
                                 <td class="criteria-name">Trabalho em equipe</td>
@@ -625,7 +645,7 @@
                                         data-criteria="equipe" required></td>
                                 <td class="result-cell" data-criteria="equipe">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="equipe"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr>
                                 <td class="criteria-name">Comunicação e clareza</td>
@@ -635,7 +655,7 @@
                                         data-criteria="comunicacao" required></td>
                                 <td class="result-cell" data-criteria="comunicacao">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="comunicacao"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr>
                                 <td class="criteria-name">Proatividade</td>
@@ -645,7 +665,7 @@
                                         data-criteria="proatividade" required></td>
                                 <td class="result-cell" data-criteria="proatividade">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="proatividade"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr>
                                 <td class="criteria-name">Capacidade de resolver problemas</td>
@@ -655,7 +675,7 @@
                                         data-criteria="problemas" required></td>
                                 <td class="result-cell" data-criteria="problemas">0</td>
                                 <td><input type="text" class="obs-input" data-criteria="problemas"
-                                        placeholder="Lorem ipsum Lorem ipsum Lorem"></td>
+                                        placeholder="Comente o desempenho neste critério."></td>
                             </tr>
                             <tr style="background: rgba(102, 126, 234, 0.1); font-weight: bold;">
                                 <td>Total</td>
@@ -827,6 +847,7 @@
                                     <div class="motivation-text">
                                         Transforme cada desafio em uma oportunidade de crescimento. Isso é o que realmente importa.
                                     </div>
+                                    <img src="/testeSolicitacao-main/desempenho/img/ilustration.png" alt="">
                                 </div>
                             </div>
                         </div>
